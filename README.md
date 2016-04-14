@@ -3,7 +3,8 @@
 
 ##### 为了方便大家使用和学习，本项目也附带上传了最新的pdf电子书，有需要的请下载使用。
 附带传送门[https://github.com/qq83387856/ng2-book-code/master/pdf](https://github.com/qq83387856/ng2-book-code/master/pdf)
-
+######想要ng-book(1.5.x)源码请check。[传送门](https://github.com/qq83387856/ng-book-code/tree/master)
+####### ng-book 英文原版（1.5.x）和中文版(1.2.x)本传送门 [https://github.com/qq83387856/ng-book-code/tree/master/pdf](https://github.com/qq83387856/ng-book-code/tree/master/pdf)
 
 ###下面就是官方对ng2-book的说明了，不关我啥事....
 
