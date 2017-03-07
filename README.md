@@ -1,13 +1,3 @@
-###这是n2-book配套源码,这个是我在google上花了39美刀买的，贡献出来供大家使用。
-###### 说明:由于目前ng2还处在beta版，更新的频率也比较快，有可以因为比较忙没有将最新的代码更新上来。请QQ联系我索取ng2相关资料
-
-##### 为了方便大家使用和学习，本项目也附带上传了最新的电子书，有需要的请下载使用。
-附带传送门[https://github.com/qq83387856/ng2-book-code/tree/master/%E7%94%B5%E5%AD%90%E4%B9%A6](https://github.com/qq83387856/ng2-book-code/tree/master/电子书)
-######想要ng-book(1.5.x)源码请check。[传送门](https://github.com/qq83387856/ng-book-code/tree/master)
-####### ng-book 英文原版（1.5.x）和中文版(1.2.x)本传送门 [https://github.com/qq83387856/ng-book-code/tree/master/pdf](https://github.com/qq83387856/ng-book-code/tree/master/pdf)
-
-###下面就是官方对ng2-book的说明了，不关我啥事....
-
 # ng-book 2: The Complete Guide to Angular 2 Sample Code
 
 ## Organization
@@ -32,3 +22,39 @@ We're currently developing the book and this code. If you have any feedback on t
 Cheers!
 
 Nate, Felipe, and the ng-book 2 team
+
+### if you feel it helpful for you ,I hope that you can give a star. thank you!! also,there is a angular2-demo-project,if you need you can clone it.[angular2-demo](https://github.com/qq83387856/angular2-demo)  
+>PS:in order to convenient for we use or study, I should offer the pdf.but I can't . If you need it ,please buy it at [https://www.ng-book.com/](https://www.ng-book.com/#packages)    
+
+### 2、about ng1.5   
+* if you need ng-book(1.5)source code please click this。[address](https://github.com/syoubaku/ng-book-code/tree/master)
+
+### 3、changeLog   
+| version |updated|comment|
+|:-------:|:------:|:---------:|
+| R27|2016-04-17|beta27|
+| R30|2016-04-28|beta30|
+| R33|2016-05-14|rc1|
+| R34|2016-06-17|rc2|
+| R35|2016-07-01|rc4|
+| R37|2016-08-11|rc5|
+| R39|2016-09-07|rc6|
+| R40|2016-09-15|2.0.0|
+| R42|2016-10-10|2.1.0|
+| R43|2016-11-31|2.2.0|
+| R45|2016-12-21|2.3.0-rc.0|
+| R47|2017-01-11|2.4.1|
+| R51|2017-02-14|2.4.7|
+| R53|2017-03-07|2.4.8|
+
+### 4 latest change
+I will set the latest branch as the default branch.
+
+### 5、other
+welcome to [xiaomo's blog](https://xiaomo.info).
+
+[click to join us](http://jq.qq.com/?_wv=1027&k=29LUKS8)
+
+if you have any questions,welcome new [issue](https://github.com/syoubaku/angular2/issues).
+
+last, introduce a web site [angular.cn](http://angular.cn)
