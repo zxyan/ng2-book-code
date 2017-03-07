@@ -4,7 +4,7 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
+} from '@angular/core';
 import { Pin, PinsService } from 'interestAppNg1';
 import { IStateService } from 'angular-ui-router';
 
@@ -16,8 +16,8 @@ export class AddPinComponent {
   saving: boolean = false;
   newPin: Pin;
 
-  constructor(@Inject('PinsService') public pinsService: PinsService,
-              @Inject('$state') public uiState: IStateService) {
+  constructor(@Inject('PinsService') private pinsService: PinsService,
+              @Inject('$state') private uiState: IStateService) {
     this.newPin = this.makeNewPin();
   }
 

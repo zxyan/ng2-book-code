@@ -3,16 +3,22 @@
  */
 import {
   Component
-} from 'angular2/core';
-import { bootstrap } from 'angular2/platform/browser';
-import { HTTP_PROVIDERS } from 'angular2/http';
+} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { HttpModule } from '@angular/http';
 
 /*
  * Components
  */
 import { SimpleHTTPComponent } from 'components/SimpleHTTPComponent';
 import { MoreHTTPRequests } from 'components/MoreHTTPRequests';
-import { YouTubeSearchComponent } from 'components/YouTubeSearchComponent';
+import {
+  YouTubeSearchComponent,
+  SearchBox,
+  SearchResultComponent
+} from 'components/YouTubeSearchComponent';
 
 /*
  * Injectables
@@ -22,15 +28,10 @@ import { youTubeServiceInjectables } from 'components/YouTubeSearchComponent';
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'http-app',
-  directives: [
-    SimpleHTTPComponent,
-    MoreHTTPRequests,
-    YouTubeSearchComponent
-  ],
   template: `
   <div class="container">
     <simple-http></simple-http>
@@ -44,7 +45,25 @@ require('css/styles.scss');
 class HttpApp {
 }
 
-bootstrap(HttpApp, [
-  HTTP_PROVIDERS,
-  youTubeServiceInjectables
-]);
+@NgModule({
+  declarations: [
+    HttpApp,
+    SimpleHTTPComponent,
+    MoreHTTPRequests,
+    YouTubeSearchComponent,
+    SearchBox,
+    SearchResultComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpModule // <--- right here
+  ],
+  bootstrap: [ HttpApp ],
+  providers: [
+    youTubeServiceInjectables
+  ]
+})
+class HttpAppModule {}
+
+platformBrowserDynamic().bootstrapModule(HttpAppModule)
+  .catch((err: any) => console.error(err));

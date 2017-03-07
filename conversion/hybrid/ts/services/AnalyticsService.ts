@@ -1,4 +1,4 @@
-import {Injectable, bind} from 'angular2/core';
+import { Injectable } from '@angular/core';
 
 /**
  * Analytics Service records metrics about what the user is doing
@@ -14,5 +14,5 @@ export class AnalyticsService {
 }
 
 export var analyticsServiceInjectables: Array<any> = [
-  bind(AnalyticsService).toClass(AnalyticsService)
+  { provide: AnalyticsService, useClass: AnalyticsService }
 ];

@@ -66,7 +66,7 @@ function makeConfig(options) {
       hotUpdateChunkFilename: "updates/[hash].[id].update.js"
     },
     plugins: [
-      new webpack.IgnorePlugin(/spec\.js$/),
+      new webpack.IgnorePlugin(/spec\.[tj]s$/),
       // new webpack.optimize.CommonsChunkPlugin('core.js'),
       new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
       new webpack.optimize.CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] }),
@@ -97,7 +97,7 @@ function makeConfig(options) {
     resolve: {
       root: [path.resolve(cwd)],
       modulesDirectories: [
-        'node_modules', 'app', 'app/ts', '.'
+        'node_modules', 'app', 'app/ts'
       ],
       extensions: ["", ".ts", ".js", ".json", ".css"],
       alias: {

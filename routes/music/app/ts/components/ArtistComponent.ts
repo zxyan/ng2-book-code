@@ -1,9 +1,9 @@
 /*
  * Angular
  */
-import {Component, OnInit} from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common';
-import {RouteParams, LocationStrategy} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 
 /*
  * Services
@@ -12,7 +12,6 @@ import {SpotifyService} from 'services/SpotifyService';
 
 @Component({
   selector: 'artist',
-  directives: [CORE_DIRECTIVES],
   template: `
   <div *ngIf="artist">
     <h1>{{ artist.name }}</h1>
@@ -29,9 +28,9 @@ export class ArtistComponent implements OnInit {
   id: string;
   artist: Object;
 
-  constructor(public routeParams: RouteParams, public spotify: SpotifyService,
-              public locationStrategy: LocationStrategy) {
-    this.id = routeParams.get('id');
+  constructor(private route: ActivatedRoute, private spotify: SpotifyService,
+              private location: Location) {
+    route.params.subscribe(params => { this.id = params['id']; });
   }
 
   ngOnInit(): void {
@@ -41,7 +40,7 @@ export class ArtistComponent implements OnInit {
   }
 
   back(): void {
-    this.locationStrategy.back();
+    this.location.back();
   }
 
   renderArtist(res: any): void {

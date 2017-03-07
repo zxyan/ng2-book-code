@@ -1,19 +1,13 @@
 import {
+  NgModule,
   Component,
-  Directive,
-  ElementRef,
   Input,
   SimpleChange,
   OnInit,
   OnDestroy,
-  DoCheck,
   OnChanges,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-} from 'angular2/core';
-
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'on-init',
@@ -35,7 +29,6 @@ class OnInitCmp implements OnInit, OnDestroy {
 
 @Component({
   selector: 'on-change',
-  inputs: ['name', 'comment'],
   template: `
   <div class="ui comments">
     <div class="comment">
@@ -63,7 +56,6 @@ class OnChangeCmp implements OnChanges {
 
 @Component({
   selector: 'lifecycle-sample-app',
-  directives: [OnInitCmp, OnChangeCmp],
   template: `
   <h4 class="ui horizontal divider header">
     OnInit and OnDestroy
@@ -115,5 +107,17 @@ export class LifecycleSampleApp2 {
     this.display = !this.display;
   }
 }
+
+@NgModule({
+  declarations: [
+    LifecycleSampleApp2,
+    OnInitCmp,
+    OnChangeCmp
+  ],
+  imports: [ CommonModule ],
+  exports: [ LifecycleSampleApp2 ]
+})
+export class LifecycleSampleApp2Module {}
+
 
 

@@ -4,10 +4,11 @@
 import {
   Component,
   Inject,
-  Injector,
-  provide,
-} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
+  ReflectiveInjector
+} from '@angular/core';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 /*
  * Services
@@ -18,7 +19,7 @@ import {ViewPortService} from 'services/ViewPortService';
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'di-sample-app',
@@ -40,22 +41,39 @@ class DiSampleApp {
   }
 
   useInjectors(): void {
-    let injector: any = Injector.resolveAndCreate([
+    let injector: any = ReflectiveInjector.resolveAndCreate([
       ViewPortService,
-      provide('OtherSizeService', {useFactory: (viewport: any) => {
-        return viewport.determineService();
-      }, deps: [ViewPortService]})
+      {
+        provide: 'OtherSizeService',
+        useFactory: (viewport: any) => {
+          return viewport.determineService();
+        },
+        deps: [ViewPortService]
+      }
     ]);
     let sizeService: any = injector.get('OtherSizeService');
     sizeService.run();
   }
 }
 
-bootstrap(DiSampleApp, [
-  ApiService,
-  ViewPortService,
-  provide('ApiServiceAlias', {useExisting: ApiService}),
-  provide('SizeService', {useFactory: (viewport: any) => {
-    return viewport.determineService();
-  }, deps: [ViewPortService]})
-]).catch((err: any) => console.error(err));
+@NgModule({
+  declarations: [ DiSampleApp ],
+  imports: [ BrowserModule ],
+  bootstrap: [ DiSampleApp ],
+  providers: [
+    ApiService,
+    ViewPortService,
+    { provide: 'ApiServiceAlias', useExisting: ApiService },
+    {
+      provide: 'SizeService',
+      useFactory: (viewport: any) => {
+        return viewport.determineService();
+      },
+      deps: [ViewPortService]
+    }
+  ]
+})
+class DiSampleAppAppModule {}
+
+platformBrowserDynamic().bootstrapModule(DiSampleAppAppModule)
+  .catch((err: any) => console.error(err));

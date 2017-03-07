@@ -3,11 +3,10 @@
   "description": "This file is an index of the sample code",
   "chapters": [
     {
-      "name": "Writing your First Angular 2 Web Application",
+      "name": "Writing your First Angular Web Application",
       "examples": [
-        "first_app/hello-world",
-        "first_app/angular2-reddit-base",
-        "first_app/angular2-reddit-completed"
+        "first_app/angular-hello-world",
+        "first_app/angular-reddit"
       ]
     },
     {
@@ -16,24 +15,18 @@
     },
     {
       "name": "How Angular Works",
-      "examples": ["how_angular_works/inventory_app"]
+      "examples": ["how_angular_works/inventory-app"]
     },
     {
-      "name": "Built-in Components",
-      "examples": [
-        "built_in_components/ng_class",
-        "built_in_components/ng_for",
-        "built_in_components/ng_non_bindable",
-        "built_in_components/ng_style",
-        "built_in_components/ng_switch"
-      ]
+      "name": "Built-in Directives",
+      "examples": ["built_in_directives"]
     },
     {
-      "name": "Forms in Angular 2",
+      "name": "Forms in Angular",
       "examples": ["forms"]
     },
     {
-      "name": "Data Architecture in Angular 2",
+      "name": "Data Architecture in Angular",
       "examples": []
     },
     {
@@ -43,6 +36,10 @@
     {
       "name": "Data Architecture with Observables - Part 2: View Components",
       "examples": []
+    },
+    {
+      "name": "Data Architecture with Redux",
+      "examples": ["redux/angular2-redux-chat"]
     },
     {
       "name": "HTTP",
@@ -58,7 +55,7 @@
       ]
     },
     {
-      "name": "Converting an Angular 1 App to Angular 2",
+      "name": "Converting an AngularJS 1.x App to Angular",
       "examples": [
         "conversion/hybrid"
       ]
@@ -71,6 +68,16 @@
       "name": "Advanced Components",
       "examples": [
         "advanced_components"
+      ]
+    },
+    {
+      "name": "Dependency Injection",
+      "examples": [
+        "dependency_injection/simple",
+        "dependency_injection/complex",
+        "dependency_injection/injector",
+        "dependency_injection/misc",
+        "dependency_injection/value"
       ]
     }
   ]

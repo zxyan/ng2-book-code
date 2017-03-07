@@ -1,66 +1,63 @@
 import {
-  it,
-  describe,
-  fdescribe,
-  expect,
-  inject,
-  injectAsync,
-  fakeAsync,
-  tick,
-  afterEach,
-  beforeEachProviders,
-  TestComponentBuilder,
+  TestBed,
   ComponentFixture,
-} from 'angular2/testing';
-import { dispatchEvent } from 'angular2/testing_internal';
-import { By } from 'angular2/platform/browser';
+  fakeAsync,
+  tick
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 
 import { DemoFormSku } from '../../app/ts/forms/demo_form_sku';
+import {
+  dispatchEvent,
+  ConsoleSpy
+} from '../util';
 
-describe('DemoFormSku', () => {
-  var _console;
-  var fakeConsole;
-  var el, input, form;
-
+describe('DemoFormSku Component', () => {
+  let originalConsole, fakeConsole;
+  let el, input, form;
+  
   beforeEach(() => {
-    // declare a fake console to track all the logs
-    fakeConsole = {};
-    fakeConsole._logs = [];
-    fakeConsole.log = (...theArgs) => fakeConsole._logs.push(theArgs.join(' '));
+    // replace the real window.console with our spy
+    fakeConsole = new ConsoleSpy();
+    originalConsole = window.console;
+    (<any>window).console = fakeConsole;
 
-    // replace the real console with our fake version
-    _console = window.console;
-    window.console = fakeConsole;
+    TestBed.configureTestingModule({
+      imports: [ FormsModule, ReactiveFormsModule ],
+      declarations: [ DemoFormSku ]
+    });
   });
 
-  // restores the real console
-  afterAll(() => window.console = _console);
+  // restore real console
+  afterAll(() => (<any>window).console = originalConsole);
 
-  function createComponent(tcb: TestComponentBuilder): Promise<ComponentFixture> {
-    return tcb.createAsync(DemoFormSku).then((fixture) => {
-      el = fixture.debugElement.nativeElement;
-      input = fixture.debugElement.query(By.css("input")).nativeElement;
-      form = fixture.debugElement.query(By.css("form")).nativeElement;
-      fixture.detectChanges();
+  function createComponent(): ComponentFixture<any> {
+    let fixture = TestBed.createComponent(DemoFormSku);
+    el = fixture.debugElement.nativeElement;
+    input = fixture.debugElement.query(By.css('input')).nativeElement;
+    form = fixture.debugElement.query(By.css('form')).nativeElement;
+    fixture.detectChanges();
 
-      return fixture;
-    });
+    return fixture;
   }
 
-  it('logs the submitted value', inject([TestComponentBuilder],
-    fakeAsync((tcb) => {
-      createComponent(tcb).then((fixture) => {
-        input.value = 'MY-SKU';
-        dispatchEvent(input, 'input');
-        fixture.detectChanges();
-        tick();
+  it('logs the submitted value', fakeAsync(() => {
+    let fixture = createComponent();
+    input.value = 'MY-SKU';
 
-        fixture.detectChanges();
-        dispatchEvent(form, 'submit');
-        tick();
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
+    tick();
 
-        expect(fakeConsole._logs).toContain('you submitted value: [object Object]');
-      });
-    })
-  ));
+    fixture.detectChanges();
+    dispatchEvent(form, 'submit');
+    tick();
+
+    expect(fakeConsole.logs).toContain('you submitted value: [object Object]');
+  }));
+
 });

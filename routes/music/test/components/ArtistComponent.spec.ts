@@ -1,70 +1,73 @@
 import {
-  it,
-  describe,
-  expect,
   inject,
-  injectAsync,
-  afterEach,
-  beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
+  fakeAsync,
+} from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MockSpotifyService } from '../mocks/spotify';
+import { SpotifyService } from '../../app/ts/services/SpotifyService';
+import {
+  advance,
+  createRoot,
+  RootCmp,
+  configureMusicTests
+} from '../MusicTestHelpers';
 
-import {MockRouterProvider} from "../mocks/routes";
-import {MockSpotifyService} from "../mocks/spotify";
-import {TestHelper} from "../mocks/helper";
-
-import {ArtistComponent} from "../../app/ts/components/ArtistComponent";
-
-describe("ArtistComponent", () => {
-  var mockSpotifyService: MockSpotifyService;
-  var mockRouterProvider: MockRouterProvider;
-
-  beforeEachProviders(() => {
-    mockSpotifyService = new MockSpotifyService();
-    mockRouterProvider = new MockRouterProvider();
-
-    return [
-      mockSpotifyService.getProviders(), mockRouterProvider.getProviders()
-    ];
+describe('ArtistComponent', () => {
+  beforeEach(() => {
+    configureMusicTests();
   });
 
-  describe("initialization", () => {
-    it("retrieves the artist", injectAsync([TestComponentBuilder], (tcb) => {
-      // makes the RouteParams return 2 as the artist id
-      mockRouterProvider.setRouteParam('id', 2);
+  describe('initialization', () => {
+    it('retrieves the artist', fakeAsync(
+      inject([Router, SpotifyService],
+             (router: Router,
+              mockSpotifyService: MockSpotifyService) => {
+        const fixture = createRoot(router, RootCmp);
 
-      return tcb.createAsync(ArtistComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(mockSpotifyService.getArtistSpy).toHaveBeenCalledWith(2);
-      });
-    }));
+        router.navigateByUrl('/artists/2');
+        advance(fixture);
+
+        expect(mockSpotifyService.getArtistSpy).toHaveBeenCalledWith('2');
+      })));
   });
 
   describe('back', () => {
-    it('returns to the previous location', injectAsync([TestComponentBuilder], (tcb) => {
-      return tcb.createAsync(ArtistComponent).then((fixture) => {
-        let artistComponent = fixture.debugElement.componentInstance;
-        let backSpy = mockRouterProvider.mockLocationStrategy.spy('back');
+    it('returns to the previous location', fakeAsync(
+      inject([Router, Location],
+             (router: Router, location: Location) => {
+        const fixture = createRoot(router, RootCmp);
+        expect(location.path()).toEqual('/');
 
-        artistComponent.back();
-        expect(backSpy).toHaveBeenCalled();
-      });
-    }));
+        router.navigateByUrl('/artists/2');
+        advance(fixture);
+        expect(location.path()).toEqual('/artists/2');
+
+        const artist = fixture.debugElement.children[1].componentInstance;
+        artist.back();
+        advance(fixture);
+
+        expect(location.path()).toEqual('/');
+      })));
   });
 
   describe('renderArtist', () => {
-    it('renders artist info', injectAsync([TestComponentBuilder], (tcb) => {
-      return tcb.createAsync(ArtistComponent).then((fixture) => {
-        let artistComponent = fixture.debugElement.componentInstance;
+    it('renders album info', fakeAsync(
+      inject([Router, SpotifyService],
+             (router: Router,
+              mockSpotifyService: MockSpotifyService) => {
+        const fixture = createRoot(router, RootCmp);
+
         let artist = {name: 'ARTIST NAME', images: [{url: 'IMAGE_1'}]};
-
         mockSpotifyService.setResponse(artist);
-        fixture.detectChanges();
 
-        var compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('h1')).toHaveText('ARTIST NAME');
+        router.navigateByUrl('/artists/2');
+        advance(fixture);
+
+        const compiled = fixture.debugElement.nativeElement;
+
+        expect(compiled.querySelector('h1').innerHTML).toContain('ARTIST NAME');
         expect(compiled.querySelector('img').src).toContain('IMAGE_1');
-      });
-    }));
+      })));
   });
 });

@@ -57,13 +57,6 @@
     "semicolon": true,
     "sort-object-literal-keys": false,
     "triple-equals": [true, "allow-null-check"],
-    "typedef": [true,
-        "call-signature",
-        "parameter",
-        "property-declaration",
-        "variable-declaration",
-        "member-variable-declaration"
-    ],
     "typedef-whitespace": [true, {
         "call-signature": "nospace",
         "index-signature": "nospace",

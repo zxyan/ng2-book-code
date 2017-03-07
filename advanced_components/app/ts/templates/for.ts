@@ -1,6 +1,8 @@
-import { Component,
-  Directive,
+import {
+  NgModule,
+  Component,
   Input,
+  Directive,
   ChangeDetectorRef,
   ViewRef,
   ViewContainerRef,
@@ -8,25 +10,24 @@ import { Component,
   DoCheck,
   IterableDiffers,
   IterableDiffer,
-} from 'angular2/core';
+} from '@angular/core';
 
 
 @Directive({
-  selector: '[ngBookRepeat]',
-  inputs: ['ngBookRepeatOf']
+  selector: '[ngBookRepeat]'
 })
-class MyRepeatIf implements DoCheck {
+class NgBookRepeat implements DoCheck {
   private items: any;
   private differ: IterableDiffer;
   private views: Map<any, ViewRef> = new Map<any, ViewRef>();
 
 
   constructor(private viewContainer: ViewContainerRef,
-              private template: TemplateRef,
+              private template: TemplateRef<any>,
               private changeDetector: ChangeDetectorRef,
               private differs: IterableDiffers) {}
 
-  set ngBookRepeatOf(items) {
+  @Input() set ngBookRepeatOf(items) {
     this.items = items;
     if (this.items && !this.differ) {
       this.differ = this.differs.find(items).create(this.changeDetector);
@@ -37,10 +38,11 @@ class MyRepeatIf implements DoCheck {
     if (this.differ) {
       let changes = this.differ.diff(this.items);
       if (changes) {
-        console.log('template', this.template);
+
         changes.forEachAddedItem((change) => {
-          let view = this.viewContainer.createEmbeddedView(this.template);
-          view.setLocal('\$implicit', change.item);
+          let view = this.viewContainer.createEmbeddedView(
+            this.template,
+            {'$implicit': change.item});
           this.views.set(change.item, view);
         });
         changes.forEachRemovedItem((change) => {
@@ -56,10 +58,9 @@ class MyRepeatIf implements DoCheck {
 
 @Component({
   selector: 'template-sample-app',
-  directives: [MyRepeatIf],
   template: `
   <ul>
-    <li *ngBookRepeat="#p of people">
+    <li *ngBookRepeat="let p of people">
       {{ p.name }} is {{ p.age }}
       <a href (click)="remove(p)">Remove</a>
     </li>
@@ -107,5 +108,14 @@ export class ForTemplateSampleApp {
     age.value = '';
   }
 }
+
+@NgModule({
+  declarations: [
+    ForTemplateSampleApp,
+    NgBookRepeat
+  ],
+  exports: [ ForTemplateSampleApp ]
+})
+export class ForTemplateSampleAppModule {}
 
 

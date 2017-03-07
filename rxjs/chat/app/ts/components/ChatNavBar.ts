@@ -1,4 +1,4 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 import {MessagesService, ThreadsService} from '../services/services';
 import {Message, Thread} from '../models';
 import * as _ from 'underscore';
@@ -26,8 +26,8 @@ import * as _ from 'underscore';
 export class ChatNavBar implements OnInit {
   unreadMessagesCount: number;
 
-  constructor(public messagesService: MessagesService,
-              public threadsService: ThreadsService) {
+  constructor(private messagesService: MessagesService,
+              private threadsService: ThreadsService) {
   }
 
   ngOnInit(): void {
@@ -45,6 +45,9 @@ export class ChatNavBar implements OnInit {
               let messageIsInCurrentThread: boolean = m.thread &&
                 currentThread &&
                 (currentThread.id === m.thread.id);
+              // note: in a "real" app you should also exclude 
+              // messages that were authored by the current user b/c they've
+              // already been "read"
               if (m && !m.isRead && !messageIsInCurrentThread) {
                 sum = sum + 1;
               }

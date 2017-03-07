@@ -6,13 +6,12 @@ import {
   Input,
   Output,
   EventEmitter
-} from 'angular2/core';
-import { NgIf } from 'angular2/common';
+} from '@angular/core';
+import { NgIf } from '@angular/common';
 import { Pin } from 'interestAppNg1';
 
 @Component({
   selector: 'pin-controls',
-  directives: [NgIf],
   template: `
 <div class="controls">
   <div class="heart">

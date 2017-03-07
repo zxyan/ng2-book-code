@@ -5,13 +5,12 @@
 import {
   Component,
   Injectable,
-  bind,
   OnInit,
   ElementRef,
   EventEmitter,
   Inject
-} from 'angular2/core';
-import { Http, Response } from 'angular2/http';
+} from '@angular/core';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
 /*
@@ -51,7 +50,7 @@ class SearchResult {
  */
 @Injectable()
 export class YouTubeService {
-  constructor(public http: Http,
+  constructor(private http: Http,
               @Inject(YOUTUBE_API_KEY) private apiKey: string,
               @Inject(YOUTUBE_API_URL) private apiUrl: string) {
   }
@@ -81,9 +80,9 @@ export class YouTubeService {
 }
 
 export var youTubeServiceInjectables: Array<any> = [
-  bind(YouTubeService).toClass(YouTubeService),
-  bind(YOUTUBE_API_KEY).toValue(YOUTUBE_API_KEY),
-  bind(YOUTUBE_API_URL).toValue(YOUTUBE_API_URL)
+  {provide: YouTubeService, useClass: YouTubeService},
+  {provide: YOUTUBE_API_KEY, useValue: YOUTUBE_API_KEY},
+  {provide: YOUTUBE_API_URL, useValue: YOUTUBE_API_URL}
 ];
 
 /**
@@ -97,11 +96,11 @@ export var youTubeServiceInjectables: Array<any> = [
     <input type="text" class="form-control" placeholder="Search" autofocus>
   `
 })
-class SearchBox implements OnInit {
+export class SearchBox implements OnInit {
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
   results: EventEmitter<SearchResult[]> = new EventEmitter<SearchResult[]>();
 
-  constructor(public youtube: YouTubeService,
+  constructor(private youtube: YouTubeService,
               private el: ElementRef) {
   }
 
@@ -144,7 +143,8 @@ class SearchBox implements OnInit {
           <h3>{{result.title}}</h3>
           <p>{{result.description}}</p>
           <p><a href="{{result.videoUrl}}"
-                class="btn btn-default" role="button">Watch</a></p>
+                class="btn btn-default" role="button">
+                Watch</a></p>
         </div>
       </div>
     </div>
@@ -156,7 +156,6 @@ export class SearchResultComponent {
 
 @Component({
   selector: 'youtube-search',
-  directives: [SearchBox, SearchResultComponent],
   template: `
   <div class='container'>
       <div class="page-header">
@@ -179,7 +178,7 @@ export class SearchResultComponent {
 
       <div class="row">
         <search-result
-          *ngFor="#result of results"
+          *ngFor="let result of results"
           [result]="result">
         </search-result>
       </div>

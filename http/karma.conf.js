@@ -39,6 +39,7 @@ module.exports = function(config) {
       },
       module: {
         loaders: [
+          { test: /\.(png|jpg|gif)$/,   loader: "url-loader?limit=50000&name=[path][name].[ext]" },
           { test: /\.ts$/, loader: 'ts-loader', exclude: [/node_modules/]}
         ]
       },
@@ -80,7 +81,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

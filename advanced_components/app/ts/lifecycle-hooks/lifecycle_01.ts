@@ -1,17 +1,10 @@
 import {
+  NgModule,
   Component,
-  Directive,
-  ElementRef,
   OnInit,
-  OnDestroy,
-  DoCheck,
-  OnChanges,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-} from 'angular2/core';
-
+  OnDestroy
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'on-init',
@@ -33,7 +26,6 @@ class OnInitCmp implements OnInit, OnDestroy {
 
 @Component({
   selector: 'lifecycle-sample-app',
-  directives: [OnInitCmp],
   template: `
   <h4 class="ui horizontal divider header">
     OnInit and OnDestroy
@@ -56,5 +48,15 @@ export class LifecycleSampleApp1 {
     this.display = !this.display;
   }
 }
+
+@NgModule({
+  declarations: [
+    LifecycleSampleApp1,
+    OnInitCmp
+  ],
+  imports: [ CommonModule ],
+  exports: [ LifecycleSampleApp1 ]
+})
+export class LifecycleSampleApp1Module {}
 
 

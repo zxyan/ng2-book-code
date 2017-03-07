@@ -1,22 +1,23 @@
 /*
- * Angular
+ * Angular Imports
  */
 import {
-  Component,
-  provide
-} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
-import {HTTP_PROVIDERS} from 'angular2/http';
+  Component
+} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 import {
-  APP_BASE_HREF,
-  ROUTER_DIRECTIVES,
-  ROUTER_PROVIDERS,
-  ROUTER_PRIMARY_COMPONENT,
-  HashLocationStrategy,
+  RouterModule,
+  Routes
+} from '@angular/router';
+import {
   LocationStrategy,
-  Router,
-  RouteConfig,
-} from 'angular2/router';
+  HashLocationStrategy,
+  APP_BASE_HREF
+} from '@angular/common';
 
 /*
  * Components
@@ -34,34 +35,47 @@ import {SPOTIFY_PROVIDERS} from 'services/SpotifyService';
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'router-app',
-  directives: [ROUTER_DIRECTIVES],
   template: `
   <router-outlet></router-outlet>
   `
 })
-@RouteConfig([
-  { path: '/', name: 'root', redirectTo: ['Search'] },
-  { path: '/search', name: 'Search', component: SearchComponent },
-  { path: '/artists/:id', name: 'Artists', component: ArtistComponent },
-  { path: '/tracks/:id', name: 'Tracks', component: TrackComponent },
-  { path: '/albums/:id', name: 'Albums', component: AlbumComponent },
-])
 class RoutesDemoApp {
   query: string;
-
-  constructor(public router: Router) {
-  }
 }
 
-bootstrap(RoutesDemoApp, [
-  ROUTER_PROVIDERS,
-  HTTP_PROVIDERS,
-  SPOTIFY_PROVIDERS,
-  provide(ROUTER_PRIMARY_COMPONENT, {useValue: RoutesDemoApp}),
-  provide(APP_BASE_HREF,            {useValue: '/'}),
-  provide(LocationStrategy,         {useClass: HashLocationStrategy})
-]).catch((err: any) => console.error(err));
+const routes: Routes = [
+  { path: '', redirectTo: 'search', pathMatch: 'full' },
+  { path: 'search', component: SearchComponent },
+  { path: 'artists/:id', component: ArtistComponent },
+  { path: 'tracks/:id', component: TrackComponent },
+  { path: 'albums/:id', component: AlbumComponent },
+];
+
+@NgModule({
+  declarations: [
+    RoutesDemoApp,
+    SearchComponent,
+    ArtistComponent,
+    TrackComponent,
+    AlbumComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    RouterModule.forRoot(routes) // <-- routes
+  ],
+  bootstrap: [ RoutesDemoApp ],
+  providers: [
+    SPOTIFY_PROVIDERS,
+    {provide: APP_BASE_HREF, useValue: '/'},
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ]
+})
+class RoutesDemoAppModule {}
+
+platformBrowserDynamic().bootstrapModule(RoutesDemoAppModule)
+  .catch((err: any) => console.error(err));

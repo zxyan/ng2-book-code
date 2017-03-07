@@ -1,18 +1,15 @@
 import {
+  NgModule,
   Component,
-  Directive,
-  ElementRef,
-  Query,
   QueryList,
-  ContentChildren,
   AfterContentInit,
-  Input
-} from 'angular2/core';
-
+  Input,
+  ContentChildren
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'tab',
-  inputs: ['title'],
   template: `
   <div class="ui bottom attached tab segment"
        [class.active]="active">
@@ -23,7 +20,7 @@ import {
   `
 })
 class Tab {
-  @Input('title') title: string;
+  @Input() title: string;
   active: boolean = false;
   name: string;
 }
@@ -32,7 +29,7 @@ class Tab {
   selector: 'tabset',
   template: `
   <div class="ui top attached tabular menu">
-    <a *ngFor="#tab of tabs"
+    <a *ngFor="let tab of tabs"
        class="item"
        [class.active]="tab.active"
        (click)="setActive(tab)">
@@ -45,17 +42,13 @@ class Tab {
   `
 })
 class Tabset implements AfterContentInit {
-  tabs: QueryList<Tab>;
+  @ContentChildren(Tab) tabs: QueryList<Tab>;
 
-  constructor(@Query(Tab) tabs:QueryList<Tab>) {
-    this.tabs = tabs;
-  }
-
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.tabs.toArray()[0].active = true;
   }
 
-  setActive(tab: Tab) {
+  setActive(tab: Tab): void {
     this.tabs.toArray().forEach((t) => t.active = false);
     tab.active = true;
   }
@@ -63,7 +56,6 @@ class Tabset implements AfterContentInit {
 
 @Component({
   selector: 'tabs-sample-app',
-  directives: [Tabset, Tab],
   template: `
   <tabset>
     <tab title="First tab">
@@ -72,7 +64,7 @@ class Tabset implements AfterContentInit {
       dignissimos quasi at molestiae sapiente natus, neque voluptatum
       ad consequuntur cupiditate nemo sunt.
     </tab>
-    <tab *ngFor="#tab of tabs" [title]="tab.title">
+    <tab *ngFor="let tab of tabs" [title]="tab.title">
       {{ tab.content }}
     </tab>
   </tabset>
@@ -90,4 +82,14 @@ export class TabsSampleApp {
   }
 }
 
+@NgModule({
+  declarations: [
+    TabsSampleApp,
+    Tabset,
+    Tab
+  ],
+  imports: [ CommonModule ],
+  exports: [ TabsSampleApp ]
+})
+export class TabsSampleAppModule {}
 

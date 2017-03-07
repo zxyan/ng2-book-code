@@ -3,21 +3,18 @@ import {
   OnInit,
   ElementRef,
   ChangeDetectionStrategy
-} from 'angular2/core';
-import {FORM_DIRECTIVES} from 'angular2/common';
+} from '@angular/core';
 import {
   MessagesService,
   ThreadsService,
   UserService
 } from '../services/services';
-import {FromNowPipe} from '../util/FromNowPipe';
 import {Observable} from 'rxjs';
 import {User, Thread, Message} from '../models';
 
 @Component({
   inputs: ['message'],
   selector: 'chat-message',
-  pipes: [FromNowPipe],
   template: `
   <div class="msg-container"
        [ngClass]="{'base-sent': !incoming, 'base-receive': incoming}">
@@ -30,7 +27,7 @@ import {User, Thread, Message} from '../models';
     <div class="messages"
       [ngClass]="{'msg-sent': !incoming, 'msg-receive': incoming}">
       <p>{{message.text}}</p>
-      <time>{{message.sender}} • {{message.sentAt | fromNow}}</time>
+      <p class="time">{{message.author.name}} • {{message.sentAt | fromNow}}</p>
     </div>
 
     <div class="avatar"
@@ -45,7 +42,7 @@ export class ChatMessage implements OnInit {
   currentUser: User;
   incoming: boolean;
 
-  constructor(public userService: UserService) {
+  constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -63,8 +60,6 @@ export class ChatMessage implements OnInit {
 
 @Component({
   selector: 'chat-window',
-  directives: [ChatMessage,
-               FORM_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="chat-window-container">
@@ -86,7 +81,7 @@ export class ChatMessage implements OnInit {
 
             <div class="panel-body msg-container-base">
               <chat-message
-                   *ngFor="#message of messages | async"
+                   *ngFor="let message of messages | async"
                    [message]="message">
               </chat-message>
             </div>
@@ -118,10 +113,10 @@ export class ChatWindow implements OnInit {
   draftMessage: Message;
   currentUser: User;
 
-  constructor(public messagesService: MessagesService,
-              public threadsService: ThreadsService,
-              public userService: UserService,
-              public el: ElementRef) {
+  constructor(private messagesService: MessagesService,
+              private threadsService: ThreadsService,
+              private userService: UserService,
+              private el: ElementRef) {
   }
 
   ngOnInit(): void {

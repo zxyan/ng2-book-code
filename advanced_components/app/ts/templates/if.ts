@@ -1,29 +1,23 @@
-import { Component,
-  Directive,
+import {
+  NgModule,
+  Component,
   Input,
-  ChangeDetectorRef,
-  ViewRef,
+  Directive,
   ViewContainerRef,
   TemplateRef,
-  DoCheck,
-  IterableDiffers,
-  IterableDiffer,
-} from 'angular2/core';
-
+} from '@angular/core';
 
 @Directive({
-  selector: '[ngBookIf]',
-  inputs: ['ngBookIf']
+  selector: '[ngBookIf]'
 })
 class NgBookIf {
   constructor(private viewContainer: ViewContainerRef,
-              private template: TemplateRef) {}
+              private template: TemplateRef<any>) {}
 
-  set ngBookIf(condition) {
+  @Input() set ngBookIf(condition) {
     if (condition) {
       this.viewContainer.createEmbeddedView(this.template);
-    }
-    else {
+    } else {
       this.viewContainer.clear();
     }
   }
@@ -31,7 +25,6 @@ class NgBookIf {
 
 @Component({
   selector: 'template-sample-app',
-  directives: [NgBookIf],
   template: `
   <button class="ui primary button" (click)="toggle()">
     Toggle
@@ -54,5 +47,14 @@ export class IfTemplateSampleApp {
     this.display = !this.display;
   }
 }
+
+@NgModule({
+  declarations: [
+    IfTemplateSampleApp,
+    NgBookIf
+  ],
+  exports: [ IfTemplateSampleApp ]
+})
+export class IfTemplateSampleAppModule {}
 
 

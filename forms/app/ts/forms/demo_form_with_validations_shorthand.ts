@@ -1,33 +1,29 @@
-import { Component } from 'angular2/core';
+import { Component } from '@angular/core';
 import {
-  CORE_DIRECTIVES,
-  FORM_DIRECTIVES,
   FormBuilder,
-  ControlGroup,
+  FormGroup,
   Validators
-} from 'angular2/common';
+} from '@angular/forms';
 
 @Component({
   selector: 'demo-form-with-validations-shorthand',
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
   template: `
 <div class="ui raised segment">
   <h2 class="ui header">Demo Form: with validations (shorthand)</h2>
-  <form [ngFormModel]="myForm"
+  <form [formGroup]="myForm"
         (ngSubmit)="onSubmit(myForm.value)"
         class="ui form">
 
     <div class="field"
-      [class.error]="!myForm.find('sku').valid && myForm.find('sku').touched">
+      [class.error]="!myForm.get('sku').valid && myForm.get('sku').touched">
       <label for="skuInput">SKU</label>
       <input type="text"
              id="skuInput"
              placeholder="SKU"
-             #sku="ngForm"
-             [ngFormControl]="myForm.controls['sku']">
-       <div *ngIf="!sku.control.valid"
+             [formControl]="myForm.controls['sku']">
+       <div *ngIf="!myForm.controls['sku'].valid"
          class="ui error message">SKU is invalid</div>
-       <div *ngIf="sku.control.hasError('required')"
+       <div *ngIf="myForm.controls['sku'].hasError('required')"
          class="ui error message">SKU is required</div>
     </div>
 
@@ -40,7 +36,7 @@ import {
   `
 })
 export class DemoFormWithValidationsShorthand {
-  myForm: ControlGroup;
+  myForm: FormGroup;
 
   constructor(fb: FormBuilder) {
     this.myForm = fb.group({

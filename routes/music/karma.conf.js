@@ -23,10 +23,11 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test.bundle.js': ['webpack']
+      'test.bundle.js': ['webpack', 'sourcemap']
     },
 
     webpack: {
+      devtool: 'inline-source-map',
       resolve: {
         root: [path.resolve(cwd)],
         modulesDirectories: ['node_modules', 'app', 'app/ts', 'test', '.'],
@@ -78,7 +79,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

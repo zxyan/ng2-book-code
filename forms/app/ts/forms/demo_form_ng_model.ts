@@ -1,15 +1,12 @@
-import { Component } from 'angular2/core';
+import { Component } from '@angular/core';
 import {
-  CORE_DIRECTIVES,
-  FORM_DIRECTIVES,
   FormBuilder,
-  ControlGroup,
+  FormGroup,
   Validators
-} from 'angular2/common';
+} from '@angular/forms';
 
 @Component({
   selector: 'demo-form-ng-model',
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
   template: `
   <div class="ui raised segment">
     <h2 class="ui header">Demo Form: with ng-model</h2>
@@ -18,7 +15,7 @@ import {
       The product name is: {{productName}}
     </div>
 
-    <form [ngFormModel]="myForm"
+    <form [formGroup]="myForm"
           (ngSubmit)="onSubmit(myForm.value)"
           class="ui form">
 
@@ -27,7 +24,7 @@ import {
         <input type="text"
                id="productNameInput"
                placeholder="Product Name"
-               [ngFormControl]="myForm.find('productName')"
+               [formControl]="myForm.get('productName')"
                [(ngModel)]="productName">
       </div>
 
@@ -40,7 +37,7 @@ import {
   `
 })
 export class DemoFormNgModel {
-  myForm: ControlGroup;
+  myForm: FormGroup;
   productName: string;
 
   constructor(fb: FormBuilder) {

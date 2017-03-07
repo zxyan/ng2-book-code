@@ -1,81 +1,73 @@
 import {
-  it,
-  describe,
-  fdescribe,
-  expect,
-  inject,
-  injectAsync,
-  afterEach,
+  TestBed,
   fakeAsync,
-  tick,
-  beforeEachProviders,
-  TestComponentBuilder,
-  ComponentFixture,
-} from 'angular2/testing';
-import { dispatchEvent } from 'angular2/testing_internal';
-import { By } from 'angular2/platform/browser';
-import { FormBuilder } from 'angular2/common';
+  inject,
+  tick
+} from '@angular/core/testing';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { DemoFormWithEvents } from '../../app/ts/forms/demo_form_with_events';
+import {
+  dispatchEvent,
+  ConsoleSpy
+} from '../util';
 
 describe('DemoFormWithEvents (bad)', () => {
-  var _console;
-  var fakeConsole;
+  var originalConsole, fakeConsole;
   var el, input, form;
 
   beforeEach(() => {
-    // declare a fake console to track all the logs
-    fakeConsole = {};
-    fakeConsole._logs = [];
-    fakeConsole.log = (...theArgs) => fakeConsole._logs.push(theArgs.join(' '));
+    // replace the real window.console with our spy
+    fakeConsole = new ConsoleSpy();
+    originalConsole = window.console; 
+    (<any>window).console = fakeConsole;
 
-    // replace the real console with our fake version
-    _console = window.console;
-    window.console = fakeConsole;
+    TestBed.configureTestingModule({
+      imports: [ FormsModule, ReactiveFormsModule ],
+      declarations: [ DemoFormWithEvents ]
+    });
   });
 
   // restores the real console
-  afterAll(() => window.console = _console);
+  afterAll(() => (<any>window).console = originalConsole);
 
-  beforeEachProviders(() => {
-    return [FormBuilder];
-  });
+  it('validates and triggers events', fakeAsync((tcb) => {
+    let fixture = TestBed.createComponent(DemoFormWithEvents);
 
-  it('validates and trigger events', inject([TestComponentBuilder],
-    fakeAsync((tcb) => {
-      tcb.createAsync(DemoFormWithEvents).then((fixture) => {
-        let el = fixture.debugElement.nativeElement;
-        let input = fixture.debugElement.query(By.css("input")).nativeElement;
-        let form = fixture.debugElement.query(By.css("form")).nativeElement;
-        fixture.detectChanges();
+    let el = fixture.debugElement.nativeElement;
+    let input = fixture.debugElement.query(By.css('input')).nativeElement;
+    let form = fixture.debugElement.query(By.css('form')).nativeElement;
+    fixture.detectChanges();
 
-        input.value = '';
-        dispatchEvent(input, 'input');
-        fixture.detectChanges();
-        tick();
+    input.value = '';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
+    tick();
 
-        // no value on sku field, all error messages are displayed
-        let msgs = el.querySelectorAll('.ui.error.message');
-        expect(msgs[0]).toHaveText('SKU is invalid');
-        expect(msgs[1]).toHaveText('SKU is required');
+    // no value on sku field, all error messages are displayed
+    let msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs[0].innerHTML).toContain('SKU is invalid');
+    expect(msgs[1].innerHTML).toContain('SKU is required');
 
-        // displays no errors when sku has a value
-        input.value = 'XYZ';
-        dispatchEvent(input, 'input');
-        fixture.detectChanges();
-        tick()
+    // displays no errors when sku has a value
+    input.value = 'XYZ';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
+    tick();
 
-        msgs = el.querySelectorAll('.ui.error.message');
-        expect(msgs.length).toEqual(0);
+    msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs.length).toEqual(0);
 
-        fixture.detectChanges();
-        dispatchEvent(form, 'submit');
-        tick();
+    fixture.detectChanges();
+    dispatchEvent(form, 'submit');
+    tick();
 
-        // checks for the form submitted message
-        expect(fakeConsole._logs).toContain('you submitted value: XYZ');
-      });
-    })
-  ));
+    // checks for the form submitted message
+    expect(fakeConsole.logs).toContain('you submitted value: XYZ');
+  }));
 
 });

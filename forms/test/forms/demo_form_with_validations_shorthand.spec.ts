@@ -1,97 +1,86 @@
 import {
-  it,
-  describe,
-  fdescribe,
-  expect,
-  inject,
-  injectAsync,
+  TestBed,
   fakeAsync,
+  inject,
   tick,
-  afterEach,
-  beforeEachProviders,
-  TestComponentBuilder,
-  ComponentFixture,
-} from 'angular2/testing';
+  ComponentFixture
+} from '@angular/core/testing';
 import {
-  CORE_DIRECTIVES,
-  FORM_DIRECTIVES,
-} from 'angular2/common';
-import { dispatchEvent } from 'angular2/testing_internal';
-import { By } from 'angular2/platform/browser';
-import { FormBuilder } from 'angular2/common';
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
-import { DemoFormWithValidationsShorthand } from '../../app/ts/forms/demo_form_with_validations_shorthand';
+import {
+  DemoFormWithValidationsShorthand
+} from '../../app/ts/forms/demo_form_with_validations_shorthand';
+import {
+  dispatchEvent,
+  ConsoleSpy
+} from '../util';
 
 describe('DemoFormWithValidationsShorthand', () => {
-  var _console;
-  var fakeConsole;
-  var el, input, form;
+  let originalConsole, fakeConsole;
+  let el, input, form;
 
   beforeEach(() => {
-    // declare a fake console to track all the logs
-    fakeConsole = {};
-    fakeConsole._logs = [];
-    fakeConsole.log = (...theArgs) => fakeConsole._logs.push(theArgs.join(' '));
+    // replace the real window.console with our spy
+    fakeConsole = new ConsoleSpy();
+    originalConsole = window.console; 
+    (<any>window).console = fakeConsole;
 
-    // replace the real console with our fake version
-    _console = window.console;
-    window.console = fakeConsole;
+    TestBed.configureTestingModule({
+      imports: [ FormsModule, ReactiveFormsModule ],
+      declarations: [ DemoFormWithValidationsShorthand ]
+    });
   });
 
-  // restores the real console
-  afterAll(() => window.console = _console);
+  // restore real console
+  afterAll(() => (<any>window).console = originalConsole);
 
-  beforeEachProviders(() => { return [FormBuilder]; });
+  function createComponent(): ComponentFixture<any> {
+    let fixture = TestBed.createComponent(DemoFormWithValidationsShorthand);
+    el = fixture.debugElement.nativeElement;
+    input = fixture.debugElement.query(By.css('input')).nativeElement;
+    form = fixture.debugElement.query(By.css('form')).nativeElement;
+    fixture.detectChanges();
 
-  function createComponent(tcb: TestComponentBuilder): Promise<ComponentFixture> {
-    return tcb.createAsync(DemoFormWithValidationsShorthand).then((fixture) => {
-      el = fixture.debugElement.nativeElement;
-      input = fixture.debugElement.query(By.css("input")).nativeElement;
-      form = fixture.debugElement.query(By.css("form")).nativeElement;
-      fixture.detectChanges();
-
-      return fixture;
-    });
+    return fixture;
   }
 
-  it('displays errors with no sku', injectAsync([TestComponentBuilder], (tcb) => {
-    return createComponent(tcb).then((fixture) => {
-      input.value = '';
-      dispatchEvent(input, 'input');
-      fixture.detectChanges();
+  it('displays errors with no sku', fakeAsync( () => {
+    let fixture = createComponent();
+    input.value = '';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
 
-      // no value on sku field, all error messages are displayed
-      let msgs = el.querySelectorAll('.ui.error.message');
-      expect(msgs[0]).toHaveText('SKU is invalid');
-      expect(msgs[1]).toHaveText('SKU is required');
-    });
+    // no value on sku field, all error messages are displayed
+    let msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs[0].innerHTML).toContain('SKU is invalid');
+    expect(msgs[1].innerHTML).toContain('SKU is required');
   }));
 
-  it('displays no errors when sku has a value', injectAsync([TestComponentBuilder], (tcb) => {
-    return createComponent(tcb).then((fixture) => {
-      input.value = 'XYZ';
-      dispatchEvent(input, 'input');
-      fixture.detectChanges();
+  it('displays no errors when sku has a value', fakeAsync( () => {
+    let fixture = createComponent();
+    input.value = 'XYZ';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
 
-      let msgs = el.querySelectorAll('.ui.error.message');
-      expect(msgs.length).toEqual(0);
-    });
+    let msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs.length).toEqual(0);
   }));
 
-  it('logs the correct form value to console', inject([TestComponentBuilder],
-    fakeAsync((tcb) => {
-      createComponent(tcb).then((fixture) => {
-        input.value = 'XYZ';
-        dispatchEvent(input, 'input');
-        tick();
+  it('logs the correct form value to console', fakeAsync( () => {
+    let fixture = createComponent();
+    input.value = 'XYZ';
+    dispatchEvent(input, 'input');
+    tick();
 
-        fixture.detectChanges();
-        dispatchEvent(form, 'submit');
-        tick();
+    fixture.detectChanges();
+    dispatchEvent(form, 'submit');
+    tick();
 
-        expect(fakeConsole._logs).toContain('you submitted value: XYZ');
-      });
-    })
-  ));
+    expect(fakeConsole.logs).toContain('you submitted value: XYZ');
+  }));
 
 });

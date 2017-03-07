@@ -1,38 +1,44 @@
 /*
  * Angular
  */
-import {bind, Component} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
+import { Component } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {
-  ROUTER_DIRECTIVES,
-  ROUTER_BINDINGS,
-  HashLocationStrategy,
-  LocationStrategy,
+  RouterModule,
   Router,
-  RouteConfig,
-} from 'angular2/router';
+  Routes
+} from '@angular/router';
+import {
+  LocationStrategy,
+  HashLocationStrategy
+} from '@angular/common';
 
 /*
  * Components
  */
 import {HomeComponent} from 'components/HomeComponent';
-import {ProductsComponent} from 'components/ProductsComponent';
+import {
+  routes as childRoutes,
+  ProductsComponent,
+  ProductsComponentModule
+} from 'components/ProductsComponent';
 
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'router-app',
-  directives: [ROUTER_DIRECTIVES],
   template: `
   <div class="page-header">
     <div class="container">
       <h1>Router Sample</h1>
       <div class="navLinks">
-        <a [routerLink]="['Home']">Home</a>
-        <a [routerLink]="['Products']">Products</a>
+        <a [routerLink]="['/home']">Home</a>
+        <a [routerLink]="['/products']">Products</a>
       </div>
     </div>
   </div>
@@ -44,16 +50,33 @@ require('css/styles.scss');
   </div>
   `
 })
-@RouteConfig([
-  { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
-  { path: '/products/...', name: 'Products', component: ProductsComponent },
-])
 class RoutesDemoApp {
-  constructor(public router: Router) {
+  constructor(private router: Router) {
   }
 }
 
-bootstrap(RoutesDemoApp, [
-  ROUTER_BINDINGS,
-  bind(LocationStrategy).toClass(HashLocationStrategy)
-]);
+const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductsComponent, children: childRoutes }
+];
+
+@NgModule({
+  declarations: [
+    RoutesDemoApp,
+    HomeComponent
+  ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    ProductsComponentModule
+  ],
+  bootstrap: [ RoutesDemoApp ],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ]
+})
+class RoutesDemoAppModule {}
+
+platformBrowserDynamic().bootstrapModule(RoutesDemoAppModule)
+  .catch((err: any) => console.error(err));
