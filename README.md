@@ -10,17 +10,6 @@ It's organized by `chapter/topic`. Generally, in the book we call out where you 
 
 We're still unifying how each example should be run. Generally, you'll need to `npm install` and then see the `README.md` in each project for instructions to get the example going.
 
-## THIS IS AN EARLY RELEASE
-
-Angular 2 is still very young so some of the API is probably going to change. Also, we're still normalizing a build process for these examples, sorry for any clutter you might find.
-We'll send you an email when we have updates available.
-
-## Feedback & Bug Reports
-
-We're currently developing the book and this code. If you have any feedback on things that aren't clear, or find any bugs just email us at: us@fullstack.io
-
-Cheers!
-
 Nate, Felipe, and the ng-book 2 team
 
 ### if you feel it helpful for you ,I hope that you can give a star. thank you!! also,there is a angular2-demo-project,if you need you can clone it.[angular2-demo](https://github.com/qq83387856/angular2-demo)  
@@ -46,9 +35,6 @@ Nate, Felipe, and the ng-book 2 team
 | R47|2017-01-11|2.4.1|
 | R51|2017-02-14|2.4.7|
 | R53|2017-03-07|2.4.8|
-
-### 4 latest change
-I will set the latest branch as the default branch.
 
 ### 5、other
 welcome to [xiaomo's blog](https://xiaomo.info).
