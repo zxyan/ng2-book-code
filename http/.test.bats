@@ -7,28 +7,32 @@ load "${NGBOOK_ROOT}/scripts/bats-assert/load.bash"
 
 @test "http unit tests pass" {
   cd $DIR
-  run npm run test
+  run ng test --single-run
   assert_output --partial 'SUCCESS'
 }
 
 @test "http e2e tests pass" {
   cd $DIR
-  run ./node_modules/.bin/protractor
+  run_ng_e2e $TEST_TMP_DIR
+  run cat ${TEST_TMP_DIR}/log.txt
   assert_output --partial 'SUCCESS'
 }
 
 setup() {
   echo "travis_fold:start:http-tests"
   cd $DIR
-  kill_by_port 8080
-  kill_by_grep "webpack-dev-server"
-  npm run go 3>- &
+  TEST_TMP_DIR="$(mktemp -d -t fullstackXXX)"
+  kill_ng_cli || :
+  kill_by_port 4200
+  # ng serve 3>- &
   true
 }
 
 teardown() {
   cd $DIR
-  kill_by_grep "webpack-dev-server"
+  kill_ng_cli || :
+  # temp_del "$TEST_TMP_DIR"
+  kill_by_port 4200
   echo "travis_fold:end:http-tests"
   true
 }

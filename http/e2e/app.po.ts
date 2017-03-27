@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class Angular2AppPage {
+export class HttpPage {
   navigateTo() {
     return browser.get('/');
   }
@@ -14,10 +14,10 @@ export class Angular2AppPage {
   }
 
   search(text) {
-    return element(by.css(`youtube-search input`)).sendKeys(text);
+    return element(by.css(`app-you-tube-search input`)).sendKeys(text);
   }
 
   getSearchText() {
-    return element(by.css(`youtube-search`)).getText();
+    return element(by.css(`app-you-tube-search`)).getText();
   }
 }

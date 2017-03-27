@@ -1,8 +1,12 @@
 import { browser, element, by } from 'protractor';
 
-export class Angular2AppPage {
+export class MusicPage {
   navigateTo() {
     return browser.get('/');
+  }
+
+  getParagraphText() {
+    return element(by.css('app-root h1')).getText();
   }
 
   getHeaderText() {
@@ -10,7 +14,7 @@ export class Angular2AppPage {
   }
 
   searchFor(text) {
-    element(by.css(`search input`)).sendKeys(text);
+    element(by.css(`app-search input`)).sendKeys(text);
     return element(by.buttonText(`Search`)).click();
   }
 
@@ -19,14 +23,14 @@ export class Angular2AppPage {
   }
 
   getTrackHeaderText() {
-    return element(by.css(`thetrack h1`)).getText();
+    return element(by.css(`app-track h1`)).getText();
   }
 
   getArtistHeaderText() {
-    return element(by.css(`artist h1`)).getText();
+    return element(by.css(`app-artist h1`)).getText();
   }
 
   getAlbumHeaderText() {
-    return element(by.css(`album h1`)).getText();
+    return element(by.css(`app-album h1`)).getText();
   }
 }

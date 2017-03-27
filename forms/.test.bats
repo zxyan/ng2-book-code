@@ -7,30 +7,36 @@ load "${NGBOOK_ROOT}/scripts/bats-assert/load.bash"
 
 @test "forms unit tests pass" {
   cd $DIR
-  run npm run test
+  run ng test --single-run
   assert_output --partial 'SUCCESS'
 }
 
 @test "forms e2e tests pass" {
   cd $DIR
-  run ./node_modules/.bin/protractor
+  run_ng_e2e $TEST_TMP_DIR
+  run cat ${TEST_TMP_DIR}/log.txt
   assert_output --partial 'SUCCESS'
 }
 
+@test "forms linting passes" {
+  cd $DIR
+  run npm run lint
+  assert_output --partial 'All files pass linting'
+}
 
 setup() {
   echo "travis_fold:start:forms"
   cd $DIR
-  kill_by_port 8080
-  kill_by_grep "webpack-dev-server"
-  npm run go 3>- &
+  TEST_TMP_DIR="$(mktemp -d -t fullstackXXX)"
+  kill_ng_cli || :
+  kill_by_port 4200
   true
 }
 
 teardown() {
   cd $DIR
-  kill_by_port 8080
-  kill_by_grep "webpack-dev-server"
+  kill_ng_cli || :
+  kill_by_port 4200
   echo "travis_fold:end:forms"
   true
 }

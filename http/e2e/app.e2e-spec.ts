@@ -1,30 +1,30 @@
-import { Angular2AppPage } from './app.po';
+import { HttpPage } from './app.po';
 
-describe('ng-book HTTP Example App', function() {
-  let page: Angular2AppPage;
+describe('ng-book HTTP Example App', () => {
+  let page: HttpPage;
 
   beforeEach(() => {
-    page = new Angular2AppPage();
+    page = new HttpPage();
   });
 
   it('should make a basic request', () => {
     page.navigateTo();
-    
-    expect(page.getResultsText('simple-http')).toEqual(``);
+
+    expect(page.getResultsText('app-simple-http')).toEqual(``);
     page.pushButton('Make Request');
-    expect(page.getResultsText('simple-http')).toMatch(`userId`);
+    expect(page.getResultsText('app-simple-http')).toMatch(`userId`);
   });
 
   it('should make more requests', () => {
     page.navigateTo();
-    
-    expect(page.getResultsText('more-http')).toEqual(``);
+
+    expect(page.getResultsText('app-more-http-requests')).toEqual(``);
     page.pushButton('Make Post');
-    expect(page.getResultsText('more-http')).toMatch(`id`);
+    expect(page.getResultsText('app-more-http-requests')).toMatch(`id`);
     page.pushButton('Make Delete');
-    expect(page.getResultsText('more-http')).toMatch(`{}`);
+    expect(page.getResultsText('app-more-http-requests')).toMatch(`{}`);
     page.pushButton('Make Headers');
-    expect(page.getResultsText('more-http')).toMatch(`body`);
+    expect(page.getResultsText('app-more-http-requests')).toMatch(`body`);
   });
 
   it('should search Youtube', () => {
@@ -33,5 +33,4 @@ describe('ng-book HTTP Example App', function() {
     page.search('cats');
     expect(page.getSearchText()).toMatch(`Funny Cats`);
   });
-
 });

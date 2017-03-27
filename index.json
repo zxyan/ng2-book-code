@@ -5,8 +5,8 @@
     {
       "name": "Writing your First Angular Web Application",
       "examples": [
-        "first_app/angular-hello-world",
-        "first_app/angular-reddit"
+        "first-app/angular-hello-world",
+        "first-app/angular-reddit"
       ]
     },
     {
@@ -15,11 +15,11 @@
     },
     {
       "name": "How Angular Works",
-      "examples": ["how_angular_works/inventory-app"]
+      "examples": ["how-angular-works/inventory-app"]
     },
     {
       "name": "Built-in Directives",
-      "examples": ["built_in_directives"]
+      "examples": ["built-in-directives"]
     },
     {
       "name": "Forms in Angular",
@@ -31,7 +31,7 @@
     },
     {
       "name": "Data Architecture with Observables - Part 1: Services",
-      "examples": ["rxjs/chat"]
+      "examples": ["rxjs/rxjs-chat"]
     },
     {
       "name": "Data Architecture with Observables - Part 2: View Components",
@@ -39,7 +39,10 @@
     },
     {
       "name": "Data Architecture with Redux",
-      "examples": ["redux/angular2-redux-chat"]
+      "examples": [
+        "redux/redux-chat",
+        "redux/redux-chat/redux-counter"
+      ]
     },
     {
       "name": "HTTP",
@@ -48,16 +51,14 @@
     {
       "name": "Routing",
       "examples": [
-        "routes/basic",
-        "routes/music",
-        "routes/auth",
-        "routes/nested"
+        "routes/routing",
+        "routes/music"
       ]
     },
     {
       "name": "Converting an AngularJS 1.x App to Angular",
       "examples": [
-        "conversion/hybrid"
+        "upgrade/hybrid"
       ]
     },
     {
@@ -67,17 +68,13 @@
     {
       "name": "Advanced Components",
       "examples": [
-        "advanced_components"
+        "advanced-components"
       ]
     },
     {
       "name": "Dependency Injection",
       "examples": [
-        "dependency_injection/simple",
-        "dependency_injection/complex",
-        "dependency_injection/injector",
-        "dependency_injection/misc",
-        "dependency_injection/value"
+        "dependency-injection"
       ]
     }
   ]
