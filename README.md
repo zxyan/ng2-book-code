@@ -35,6 +35,7 @@ Nate, Felipe, and the ng-book 2 team
 | R47|2017-01-11|2.4.1|
 | R51|2017-02-14|2.4.7|
 | R53|2017-03-07|2.4.8|
+| R56|2017-03-27|2.4.10|
 
 ### 5、other
 welcome to [xiaomo's blog](https://xiaomo.info).
