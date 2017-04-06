@@ -16,7 +16,7 @@ Nate, Felipe, and the ng-book 2 team
 >PS:in order to convenient for we use or study, I should offer the pdf.but I can't . If you need it ,please buy it at [https://www.ng-book.com/](https://www.ng-book.com/#packages)    
 
 ### 2、about ng1.5   
-* if you need ng-book(1.5)source code please click this。[address](https://github.com/syoubaku/ng-book-code/tree/master)
+* if you need ng-book(1.5)source code please click this。[address](https://github.com/AngularLovers/angularjs/tree/master)
 
 ### 3、changeLog   
 | version |updated|comment|
