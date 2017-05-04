@@ -19,6 +19,8 @@ Nate, Felipe, and the ng-book 2 team
 * if you need ng-book(1.5)source code please click this。[address](https://github.com/AngularLovers/angularjs/tree/master)
 
 ### 3、changeLog   
+
+
 | version |updated|comment|
 |:----:|:----:|:----:|
 | R27|2016-04-17|beta27|
@@ -36,6 +38,8 @@ Nate, Felipe, and the ng-book 2 team
 | R51|2017-02-14|2.4.7|
 | R53|2017-03-07|2.4.8|
 | R56|2017-03-27|2.4.10|
+
+
 
 ### 5、other
 welcome to [xiaomo's blog](https://xiaomo.info).
