@@ -20,7 +20,7 @@ Nate, Felipe, and the ng-book 2 team
 
 ### 3、changeLog   
 | version |updated|comment|
-|:-------:|:------:|:---------:|
+|:----:|:----:|:----:|
 | R27|2016-04-17|beta27|
 | R30|2016-04-28|beta30|
 | R33|2016-05-14|rc1|
