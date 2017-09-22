@@ -12,11 +12,11 @@ We're still unifying how each example should be run. Generally, you'll need to `
 
 Nate, Felipe, and the ng-book 2 team
 
-### if you feel it helpful for you ,I hope that you can give a star. thank you!! also,there is a angular2-demo-project,if you need you can clone it.[angular2-demo](https://github.com/qq83387856/angular2-demo)  
->PS:in order to convenient for we use or study, I should offer the pdf.but I can't . If you need it ,please buy it at [https://www.ng-book.com/](https://www.ng-book.com/#packages)    
+### if you feel it helpful for you, I hope that you can give a star. thank you!! also, there is a angular2-demo-project, if you need you can clone it. [angular2-demo](https://github.com/qq83387856/angular2-demo)
+>PS: in order to convenient for we use or study, I should offer the pdf. but I can't. If you need it, please buy it at [https://www.ng-book.com/](https://www.ng-book.com/#packages)
 
 ### 2、about ng1.5   
-* if you need ng-book(1.5)source code please click this。[address](https://github.com/AngularLovers/angularjs/tree/master)
+* if you need ng-book(1.5) source code please click this. [address](https://github.com/AngularLovers/angularjs/tree/master)
 
 ### 3、changeLog   
 
@@ -46,6 +46,6 @@ welcome to [xiaomo's blog](https://xiaomo.info).
 
 [click to join us](http://jq.qq.com/?_wv=1027&k=29LUKS8)
 
-if you have any questions,welcome new [issue](https://github.com/syoubaku/angular2/issues).
+if you have any questions, welcome new [issue](https://github.com/syoubaku/angular2/issues).
 
 last, introduce a web site [angular.cn](http://angular.cn)
