@@ -49,3 +49,23 @@ welcome to [xiaomo's blog](https://xiaomo.info).
 if you have any questions, welcome new [issue](https://github.com/syoubaku/angular2/issues).
 
 last, introduce a web site [angular.cn](http://angular.cn)
+
+
+## 贡献者
+
+感谢所有为本项目做出贡献的开发者们.
+<a href="graphs/contributors"><img src="https://opencollective.com/angular2/contributors.svg?width=890" /></a>
+
+
+## 支持者
+
+感谢您的支持! 🙏  [[成为支持者](https://opencollective.com/angular2#backer)]
+
+<a href="https://opencollective.com/angular2#backers" target="_blank"><img src="https://opencollective.com/angular2/backers.svg?width=890"></a>
+
+
+## 赞助商
+
+[[成为赞助商](https://opencollective.com/angular2#sponsor)]支持本项目并成为赞助商. 您的LOGO和网站链接将会被展示在这里. 
+
+
