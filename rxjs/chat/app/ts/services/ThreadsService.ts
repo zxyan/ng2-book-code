@@ -1,4 +1,4 @@
-import {Injectable, bind} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import {Thread, Message} from '../models';
 import {MessagesService} from './MessagesService';
@@ -21,7 +21,7 @@ export class ThreadsService {
   // selected thread
   currentThreadMessages: Observable<Message[]>;
 
-  constructor(public messagesService: MessagesService) {
+  constructor(private messagesService: MessagesService) {
 
     this.threads = messagesService.messages
       .map( (messages: Message[]) => {
@@ -73,5 +73,5 @@ export class ThreadsService {
 }
 
 export var threadsServiceInjectables: Array<any> = [
-  bind(ThreadsService).toClass(ThreadsService)
+  ThreadsService
 ];

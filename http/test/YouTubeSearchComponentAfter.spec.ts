@@ -1,25 +1,17 @@
-/// <reference path="../typings/karma-read-json.d.ts" />
-import {provide} from 'angular2/core';
+/// <reference path="./typings/karma-read-json.d.ts" />
 import {
-  it,
-  describe,
-  expect,
+  TestBed,
   inject,
   fakeAsync,
-  tick,
-  afterEach,
-  beforeEachProviders,
-  TestComponentBuilder,
-} from 'angular2/testing';
-import {MockBackend} from 'angular2/http/testing';
+  tick
+} from '@angular/core/testing';
+import {MockBackend} from '@angular/http/testing';
 import {
   Http,
   ConnectionBackend,
   BaseRequestOptions,
-  Response,
-  ResponseOptions,
-  RequestMethod,
-} from 'angular2/http';
+  Response
+} from '@angular/http';
 
 import {
   YOUTUBE_API_KEY,
@@ -27,18 +19,35 @@ import {
   YouTubeService
 } from '../app/ts/components/YouTubeSearchComponent';
 
+const response = {
+  'items': [
+    {
+      'id': { 'videoId': 'VIDEO_ID' },
+      'snippet': {
+        'title': 'TITLE',
+        'description': 'DESCRIPTION',
+        'thumbnails': {
+          'high': { 'url': 'THUMBNAIL_URL' }
+        }
+      }
+    }
+  ]
+};
+
 describe('MoreHTTPRequests (after)', () => {
-  beforeEachProviders(() => {
-    return [
-      YouTubeService,
-      BaseRequestOptions,
-      MockBackend,
-      provide(YOUTUBE_API_KEY, {useValue: 'YOUTUBE_API_KEY'}),
-      provide(YOUTUBE_API_URL, {useValue: 'YOUTUBE_API_URL'}),
-      provide(Http, {useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
-        return new Http(backend, defaultOptions);
-      }, deps: [MockBackend, BaseRequestOptions]}),
-    ]
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        YouTubeService,
+        BaseRequestOptions,
+        MockBackend,
+        { provide: YOUTUBE_API_KEY, useValue: 'YOUTUBE_API_KEY' },
+        { provide: YOUTUBE_API_URL, useValue: 'YOUTUBE_API_URL' },
+        { provide: Http, useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
+          return new Http(backend, defaultOptions);
+        }, deps: [MockBackend, BaseRequestOptions] }
+      ]
+    });
   });
 
   describe('search', () => {
@@ -63,9 +72,6 @@ describe('MoreHTTPRequests (after)', () => {
         })
       )
     }
-
-    // reads the YouTube response fixture
-    let response = readJSON('test/fixture/youtube-response.json');
 
     it('parses YouTube video id', search('hey', response, (req, res) => {
       let video = res[0];

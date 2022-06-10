@@ -66,7 +66,7 @@ function makeConfig(options) {
       hotUpdateChunkFilename: "updates/[hash].[id].update.js"
     },
     plugins: [
-      new webpack.IgnorePlugin(/spec\.js$/),
+      new webpack.IgnorePlugin(/spec\.[tj]s$/),
       // new webpack.optimize.CommonsChunkPlugin('core.js'),
       new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
       new webpack.optimize.CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] }),
@@ -96,9 +96,7 @@ function makeConfig(options) {
     },
     resolve: {
       root: [path.resolve(cwd)],
-      modulesDirectories: [
-        'node_modules', 'app', 'app/ts', '.'
-      ],
+      modulesDirectories: [ 'node_modules', 'app', 'app/ts' ],
       extensions: ["", ".ts", ".js", ".json", ".css"],
       alias: {
         'app': 'app',
@@ -114,14 +112,6 @@ function makeConfig(options) {
         { test: /\.(png|jpg|gif|ico)$/,   loader: "file-loader?limit=0&name=[path][name].[ext]" },
         { test: /\.json$/, loader: 'json' },
         { test: /^(?!.*\.min\.css$).*\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap")},
-        { test: /\.scss$/, loaders: ['style-loader',
-                                     ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap"),
-                                     'sass-loader' +
-                                     '?outputStyle=expanded&' +
-                                     'root='+appDir+'&' +
-                                     '&includePaths[]'+npmRoot + '&' +
-                                     '&includePaths[]'+appDir 
-                                    ]},
         { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,         loader: "url-loader" },
         { test: /\.html$/,    loader: "raw" },
         { test: /^index\.html$/, loader: "file-loader?name=[path][name].[ext]" },

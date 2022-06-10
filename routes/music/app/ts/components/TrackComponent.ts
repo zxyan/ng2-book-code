@@ -2,9 +2,9 @@
  * Angular
  */
 
-import {Component, OnInit} from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common';
-import {RouteParams, LocationStrategy} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 
 /*
  * Services
@@ -17,7 +17,6 @@ import {SpotifyService} from 'services/SpotifyService';
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/track
 @Component({
   selector: 'theTrack',
-  directives: [CORE_DIRECTIVES],
   template: `
   <div *ngIf="track">
     <h1>{{ track.name }}</h1>
@@ -38,9 +37,9 @@ export class TrackComponent implements OnInit {
   id: string;
   track: Object;
 
-  constructor(public routeParams: RouteParams, public spotify: SpotifyService,
-              public locationStrategy: LocationStrategy) {
-    this.id = routeParams.get('id');
+  constructor(private route: ActivatedRoute, private spotify: SpotifyService,
+              private location: Location) {
+    route.params.subscribe(params => { this.id = params['id']; });
   }
 
   ngOnInit(): void {
@@ -50,7 +49,7 @@ export class TrackComponent implements OnInit {
   }
 
   back(): void {
-    this.locationStrategy.back();
+    this.location.back();
   }
 
   renderTrack(res: any): void {

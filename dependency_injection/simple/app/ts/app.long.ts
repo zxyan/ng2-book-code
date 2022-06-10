@@ -3,10 +3,11 @@
  */
 import {
   Component,
-  provide,
   Inject,
-} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
+} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 /*
  * Services
@@ -16,7 +17,7 @@ import {ApiService} from 'services/ApiService';
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 require('images/ng-book-2-minibook.png');
 
 @Component({
@@ -36,7 +37,15 @@ class DiSampleApp {
   }
 }
 
-bootstrap(DiSampleApp, [
-  provide(ApiService, { useClass: ApiService })
-])
+@NgModule({
+  declarations: [ DiSampleApp ],
+  imports: [ BrowserModule ],
+  bootstrap: [ DiSampleApp ],
+  providers: [
+    { provide: ApiService, useClass: ApiService }
+  ]
+})
+class DiSampleAppAppModule {}
+
+platformBrowserDynamic().bootstrapModule(DiSampleAppAppModule)
   .catch((err: any) => console.error(err));

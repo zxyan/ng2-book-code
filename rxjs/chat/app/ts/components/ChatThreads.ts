@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy
-} from 'angular2/core';
+} from '@angular/core';
 import {ThreadsService} from '../services/services';
 import {Observable} from 'rxjs';
 import {Thread} from '../models';
@@ -26,11 +26,11 @@ import {Thread} from '../models';
   </div>
   `
 })
-class ChatThread implements OnInit {
+export class ChatThread implements OnInit {
   thread: Thread;
   selected: boolean = false;
 
-  constructor(public threadsService: ThreadsService) {
+  constructor(private threadsService: ThreadsService) {
   }
 
   ngOnInit(): void {
@@ -51,7 +51,6 @@ class ChatThread implements OnInit {
 
 @Component({
   selector: 'chat-threads',
-  directives: [ChatThread],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- conversations -->
@@ -59,7 +58,7 @@ class ChatThread implements OnInit {
       <div class="conversation-wrap">
 
         <chat-thread
-             *ngFor="#thread of threads | async"
+             *ngFor="let thread of threads | async"
              [thread]="thread">
         </chat-thread>
 
@@ -70,7 +69,7 @@ class ChatThread implements OnInit {
 export class ChatThreads {
   threads: Observable<any>;
 
-  constructor(public threadsService: ThreadsService) {
+  constructor(private threadsService: ThreadsService) {
     this.threads = threadsService.orderedThreads;
   }
 }

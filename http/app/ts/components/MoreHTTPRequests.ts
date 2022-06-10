@@ -1,19 +1,16 @@
 /*
  * Angular
  */
-import { Component } from 'angular2/core';
-import { JsonPipe, CORE_DIRECTIVES } from 'angular2/common';
+import { Component } from '@angular/core';
 import {
   Http,
   Response,
   RequestOptions,
   Headers
-} from 'angular2/http';
+} from '@angular/http';
 
 @Component({
   selector: 'more-http',
-  directives: [CORE_DIRECTIVES],
-  pipes: [JsonPipe],
   template: `
   <h2>More Requests</h2>
   <button type="button" (click)="makePost()">Make Post</button>
@@ -27,7 +24,7 @@ export class MoreHTTPRequests {
   data: Object;
   loading: boolean;
 
-  constructor(public http: Http) {
+  constructor(private http: Http) {
   }
 
   makePost(): void {

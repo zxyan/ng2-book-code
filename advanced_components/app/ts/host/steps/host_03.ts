@@ -1,15 +1,14 @@
-import { Component, Directive, ElementRef } from 'angular2/core';
-
+import { NgModule } from '@angular/core';
+import { Component, Input, Directive, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '[popup]',
-  inputs: ['message'],
   host: {
     '(click)': 'displayMessage()'
   }
 })
 class Popup {
-  message: String;
+  @Input() message: String;
 
   constructor(_elementRef: ElementRef) {
     console.log(_elementRef);
@@ -22,7 +21,6 @@ class Popup {
 
 @Component({
   selector: 'host-sample-app',
-  directives: [Popup],
   template: `
   <div class="ui message" popup
        message="Clicked the message">
@@ -41,5 +39,15 @@ class Popup {
 })
 export class HostSampleApp3 {
 }
+
+@NgModule({
+  declarations: [
+    HostSampleApp3,
+    Popup
+  ],
+  exports: [ HostSampleApp3 ]
+})
+export class HostSampleApp3Module {}
+
 
 

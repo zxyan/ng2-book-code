@@ -7,21 +7,32 @@
  */
 
 import {
+  NgModule,
   Component
-} from 'angular2/core';
-import { bootstrap } from 'angular2/platform/browser';
+} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {
+  FormsModule
+} from '@angular/forms';
 
 /*
  * Components
  */
 import {ChatNavBar} from './components/ChatNavBar';
-import {ChatThreads} from './components/ChatThreads';
-import {ChatWindow} from './components/ChatWindow';
+import {
+  ChatThreads,
+  ChatThread
+  } from './components/ChatThreads';
+import {
+  ChatWindow,
+  ChatMessage
+  } from './components/ChatWindow';
 
 /*
  * Injectables
  */
-import { servicesInjectables } from './services/services';
+import {servicesInjectables} from './services/services';
 import {utilInjectables} from './util/util';
 
 /*
@@ -38,13 +49,10 @@ import {ChatExampleData} from './ChatExampleData';
 /*
  * Webpack
  */
-require('../css/styles.scss');
+require('../css/styles.css');
 
 @Component({
   selector: 'chat-app',
-  directives: [ChatNavBar,
-               ChatThreads,
-               ChatWindow],
   template: `
   <div>
     <nav-bar></nav-bar>
@@ -56,14 +64,33 @@ require('../css/styles.scss');
   `
 })
 class ChatApp {
-  constructor(public messagesService: MessagesService,
-              public threadsService: ThreadsService,
-              public userService: UserService) {
+  constructor(private messagesService: MessagesService,
+              private threadsService: ThreadsService,
+              private userService: UserService) {
     ChatExampleData.init(messagesService, threadsService, userService);
   }
 }
 
-bootstrap(ChatApp, [ servicesInjectables, utilInjectables ]);
+@NgModule({
+  declarations: [
+    ChatApp,
+    ChatNavBar,
+    ChatThreads,
+    ChatThread,
+    ChatWindow,
+    ChatMessage,
+    utilInjectables
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule
+  ],
+  bootstrap: [ ChatApp ],
+  providers: [ servicesInjectables ]
+})
+export class ChatAppModule {}
+
+platformBrowserDynamic().bootstrapModule(ChatAppModule);
 
 // --------------------
 // You can ignore these 'require' statements. The code will work without them.

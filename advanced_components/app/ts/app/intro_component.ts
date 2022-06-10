@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from 'angular2/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'intro',
@@ -10,7 +10,7 @@ import { Component, ViewEncapsulation } from 'angular2/core';
     </p>
 
     <p>
-    Many of the examples use <tt>console.log</tt> so make sure you have your
+    Many of the examples use <span>console.log</span> so make sure you have your
     browser's console open to see the debugging messages. 
     </p>
 

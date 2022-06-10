@@ -1,8 +1,8 @@
 /*
  * Angular
  */
-import {Component} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'byid',
@@ -11,7 +11,7 @@ import {RouteParams} from 'angular2/router';
 export class ByIdComponent {
   id: string;
 
-  constructor(public routeParams: RouteParams) {
-    this.id = routeParams.get('id');
+  constructor(private route: ActivatedRoute) {
+    route.params.subscribe(params => { this.id = params['id']; });
   }
 }

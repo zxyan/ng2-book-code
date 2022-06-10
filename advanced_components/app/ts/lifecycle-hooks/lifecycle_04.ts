@@ -1,7 +1,6 @@
 import {
+  NgModule,
   Component,
-  Directive,
-  ElementRef,
   Input,
   SimpleChange,
   IterableDiffers,
@@ -15,8 +14,8 @@ import {
   AfterContentChecked,
   AfterViewInit,
   AfterViewChecked,
-} from 'angular2/core';
-
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'on-init',
@@ -38,7 +37,6 @@ class OnInitCmp implements OnInit, OnDestroy {
 
 @Component({
   selector: 'on-change',
-  inputs: ['name', 'comment'],
   template: `
   <div class="ui comments">
     <div class="comment">
@@ -66,7 +64,6 @@ class OnChangeCmp implements OnChanges {
 
 @Component({
   selector: 'do-check-item',
-  inputs: ['comment'],
   outputs: ['onRemove'],
   template: `
   <div class="ui feed">
@@ -113,7 +110,7 @@ class DoCheckItem implements DoCheck {
   }
 
   ngDoCheck() {
-    var changes = this.differ.diff(this.comment);
+    let changes = this.differ.diff(this.comment);
 
     if (changes) {
       changes.forEachAddedItem(r => this.logChange('added', r));
@@ -149,10 +146,9 @@ class DoCheckItem implements DoCheck {
 
 @Component({
   selector: 'do-check',
-  directives: [DoCheckItem],
   template: `
   <do-check-item [comment]="comment"
-    *ngFor="#comment of comments" (onRemove)="removeComment($event)">
+    *ngFor="let comment of comments" (onRemove)="removeComment($event)">
   </do-check-item>
 
   <button class="ui primary button" (click)="addComment()">
@@ -204,7 +200,7 @@ class DoCheckCmp implements DoCheck {
   }
 
   ngDoCheck(): void {
-    var changes = this.differ.diff(this.comments);
+    let changes = this.differ.diff(this.comments);
 
     if (changes) {
       changes.forEachAddedItem(r => console.log('Added', r.item));
@@ -232,15 +228,15 @@ class AftersCmp implements OnInit, OnDestroy, DoCheck,
   counter: number;
 
   constructor() {
-    console.log('AfterCmd --------- [constructor]');
+    console.log('AfterCmp --------- [constructor]');
     this.counter = 1;
   }
   inc() {
-    console.log('AfterCmd --------- [counter]');
+    console.log('AfterCmp --------- [counter]');
     this.counter += 1;
   }
   ngOnInit() {
-    console.log('AfterCmd - OnInit');
+    console.log('AfterCmp - OnInit');
   }
   ngOnDestroy() {
     console.log('AfterCmp - OnDestroy');
@@ -267,7 +263,6 @@ class AftersCmp implements OnInit, OnDestroy, DoCheck,
 
 @Component({
   selector: 'lifecycle-sample-app',
-  directives: [OnInitCmp, OnChangeCmp, DoCheckCmp, AftersCmp],
   template: `
   <h4 class="ui horizontal divider header">
     OnInit and OnDestroy
@@ -345,5 +340,20 @@ export class LifecycleSampleApp4 {
     this.displayAfters = !this.displayAfters;
   }
 }
+
+@NgModule({
+  declarations: [
+    LifecycleSampleApp4,
+    DoCheckItem,
+    OnInitCmp,
+    OnChangeCmp,
+    DoCheckCmp,
+    AftersCmp
+  ],
+  imports: [ CommonModule ],
+  exports: [ LifecycleSampleApp4 ]
+})
+export class LifecycleSampleApp4Module {}
+
 
 

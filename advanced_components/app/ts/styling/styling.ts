@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from 'angular2/core';
+import { NgModule } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 let externalCSSUrl: string = require('file-loader!./external.css'); // webpack gives a URL
 
 @Component({
@@ -90,8 +91,6 @@ class NoEncapsulation {
 
 @Component({
   selector: 'style-sample-app',
-  directives: [
-    InlineStyle, ExternalStyle, NativeEncapsulation, NoEncapsulation],
   template: `
     <inline-style></inline-style>
     <external-style></external-style>
@@ -102,4 +101,19 @@ class NoEncapsulation {
 export class StyleSampleApp {
 }
 
+
+const components: any = [
+  StyleSampleApp,
+  InlineStyle,
+  ExternalStyle,
+  NativeEncapsulation,
+  NoEncapsulation
+];
+
+@NgModule({
+  declarations: components,
+  exports: components
+})
+export class StyleSampleAppModule {
+}
 

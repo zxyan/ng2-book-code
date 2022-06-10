@@ -1,16 +1,17 @@
 /*
  * Angular
  */
-import {provide, Component} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
+import { Component } from '@angular/core';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import {
-  ROUTER_DIRECTIVES,
-  ROUTER_PROVIDERS,
-  HashLocationStrategy,
-  LocationStrategy,
+  RouterModule,
   Router,
-  RouteConfig,
-} from 'angular2/router';
+  Routes
+} from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 /*
  * Components
@@ -25,24 +26,24 @@ import {ProtectedComponent} from 'components/ProtectedComponent';
  * Services
  */
 import {AUTH_PROVIDERS} from 'services/AuthService';
+import {LoggedInGuard} from 'guards/loggedIn.guard';
 
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'router-app',
-  directives: [ROUTER_DIRECTIVES, LoginComponent],
   template: `
   <div class="page-header">
     <div class="container">
       <h1>Router Sample</h1>
       <div class="navLinks">
-        <a [routerLink]="['/Home']">Home</a>
-        <a [routerLink]="['/About']">About</a>
-        <a [routerLink]="['/Contact']">Contact us</a>
-        <a [routerLink]="['/Protected']">Protected</a>
+        <a [routerLink]="['/home']">Home</a>
+        <a [routerLink]="['/about']">About</a>
+        <a [routerLink]="['/contact']">Contact Us</a>
+        <a [routerLink]="['/protected']">Protected</a>
       </div>
     </div>
   </div>
@@ -59,20 +60,42 @@ require('css/styles.scss');
   </div>
   `
 })
-@RouteConfig([
-  { path: '/',          name: 'root',      redirectTo: ['Home'] },
-  { path: '/home',      name: 'Home',      component: HomeComponent },
-  { path: '/about',     name: 'About',     component: AboutComponent },
-  { path: '/contact',   name: 'Contact',   component: ContactComponent },
-  { path: '/protected', name: 'Protected', component: ProtectedComponent },
-])
 class RoutesDemoApp {
-  constructor(public router: Router) {
+  constructor(private router: Router) {
   }
 }
 
-bootstrap(RoutesDemoApp, [
-  ROUTER_PROVIDERS,
-  AUTH_PROVIDERS,
-  provide(LocationStrategy, {useClass: HashLocationStrategy})
-]);
+const routes: Routes = [
+  { path: '',          redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home',      component: HomeComponent },
+  { path: 'about',     component: AboutComponent },
+  { path: 'contact',   component: ContactComponent },
+  { path: 'protected', component: ProtectedComponent,
+    canActivate: [LoggedInGuard]}
+];
+
+@NgModule({
+  declarations: [
+    RoutesDemoApp,
+    HomeComponent,
+    AboutComponent,
+    ContactComponent,
+    ProtectedComponent,
+    LoginComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    RouterModule.forRoot(routes) // <-- routes
+  ],
+  bootstrap: [ RoutesDemoApp ],
+  providers: [
+    AUTH_PROVIDERS,
+    LoggedInGuard,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  ]
+})
+class RoutesDemoAppModule {}
+
+platformBrowserDynamic().bootstrapModule(RoutesDemoAppModule)
+  .catch((err: any) => console.error(err));

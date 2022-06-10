@@ -19,8 +19,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // { pattern: './node_modules/es5-shim/es5-shim.js', watched: false },
-      // { pattern: './node_modules/es6-shim/es6-shim.js', watched: false },
-      { pattern: './vendor/es6-shim.js', watched: false },
+      // { pattern: './node_modules/core-js/es6/core-js/es6.js', watched: false },
+      { pattern: './vendor/core-js/es6.js', watched: false },
       { pattern: 'test.bundle.js', watched: false }
     ],
 
@@ -93,7 +93,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

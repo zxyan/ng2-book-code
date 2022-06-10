@@ -1,14 +1,17 @@
 /*
- * Angular
+ * Angular Imports
  */
-import {Component} from 'angular2/core';
-import {bootstrap} from 'angular2/platform/browser';
 import {
-  ROUTER_DIRECTIVES,
-  ROUTER_PROVIDERS,
-  Router,
-  RouteConfig,
-} from 'angular2/router';
+  NgModule,
+  Component
+} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {
+  RouterModule,
+  Routes
+} from '@angular/router';
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 /*
  * Components
@@ -20,19 +23,18 @@ import {ContactComponent} from 'components/ContactComponent';
 /*
  * Webpack
  */
-require('css/styles.scss');
+require('css/styles.css');
 
 @Component({
   selector: 'router-app',
-  directives: [ROUTER_DIRECTIVES],
   template: `
   <div>
     <nav>
       <a>Navigation:</a>
       <ul>
-        <li><a [routerLink]="['/Home']">Home</a></li>
-        <li><a [routerLink]="['/About']">About</a></li>
-        <li><a [routerLink]="['/Contact']">Contact us</a></li>
+        <li><a [routerLink]="['home']">Home</a></li>
+        <li><a [routerLink]="['about']">About</a></li>
+        <li><a [routerLink]="['contact']">Contact Us</a></li>
       </ul>
     </nav>
 
@@ -40,18 +42,32 @@ require('css/styles.scss');
   </div>
   `
 })
-@RouteConfig([
-  { path: '/', name: 'root', redirectTo: ['/Home'] },
-  { path: '/home', name: 'Home', component: HomeComponent },
-  { path: '/about', name: 'About', component: AboutComponent },
-  { path: '/contact', name: 'Contact', component: ContactComponent },
-  { path: '/contactus', name: 'ContactUs', redirectTo: ['/Contact'] },
-])
 class RoutesDemoApp {
-  constructor(public router: Router) {
-  }
 }
 
-bootstrap(RoutesDemoApp, [
-  ROUTER_PROVIDERS,
-]);
+const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'contactus', redirectTo: 'contact' },
+];
+
+@NgModule({
+  declarations: [
+    RoutesDemoApp,
+    HomeComponent,
+    AboutComponent,
+    ContactComponent
+  ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes) // <-- routes
+  ],
+  bootstrap: [ RoutesDemoApp ],
+  providers: [ ]
+})
+class RoutesDemoAppModule {}
+
+platformBrowserDynamic().bootstrapModule(RoutesDemoAppModule)
+  .catch((err: any) => console.error(err));

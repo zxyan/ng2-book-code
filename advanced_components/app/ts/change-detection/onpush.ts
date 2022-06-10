@@ -1,9 +1,8 @@
-import { Component,
-  Directive,
+import {
+  Component,
   Input,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
-} from 'angular2/core';
+} from '@angular/core';
 
 
 class Profile {
@@ -16,7 +15,6 @@ class Profile {
 
 @Component({
   selector: 'default',
-  inputs: ['profile'],
   template: `
   <h4 class="ui horizontal divider header">
     Default Strategy
@@ -28,6 +26,7 @@ class Profile {
       <input
         type="text"
         [(ngModel)]="profile.first"
+        name="first"
         placeholder="First Name">
     </div>
     <div class="field">
@@ -35,6 +34,7 @@ class Profile {
       <input
         type="text"
         [(ngModel)]="profile.last"
+        name="last"
         placeholder="Last Name">
     </div>
   </form>
@@ -43,13 +43,12 @@ class Profile {
   </div>
   `
 })
-class DefaultCmp {
+export class DefaultCmp {
   @Input() profile: Profile;
 }
 
 @Component({
   selector: 'on-push',
-  inputs: ['profile'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
   <h4 class="ui horizontal divider header">
@@ -62,6 +61,7 @@ class DefaultCmp {
       <input
         type="text"
         [(ngModel)]="profile.first"
+        name="first"
         placeholder="First Name">
     </div>
     <div class="field">
@@ -69,6 +69,7 @@ class DefaultCmp {
       <input
         type="text"
         [(ngModel)]="profile.last"
+        name="last"
         placeholder="Last Name">
     </div>
   </form>
@@ -77,13 +78,12 @@ class DefaultCmp {
   </div>
   `
 })
-class OnPushCmp {
+export class OnPushCmp {
   @Input() profile: Profile;
 }
 
 @Component({
   selector: 'change-detection-sample-app',
-  directives: [DefaultCmp, OnPushCmp],
   template: `
   <div class="ui page grid">
     <div class="two column row">

@@ -1,5 +1,9 @@
-import { Component, Directive, ElementRef } from 'angular2/core';
-
+import {
+  Component,
+  Input,
+  Directive,
+  NgModule
+} from '@angular/core';
 
 @Component({
   selector: 'sample',
@@ -30,14 +34,13 @@ class Sample {
 
 @Directive({
   selector: '[popup]',
-  inputs: ['message'],
   exportAs: 'popup',
   host: {
     '(click)': 'onClick()'
   }
 })
 class Popup {
-  message: string;
+  @Input() message: string;
 
   ngOnInit(): void {
     console.log('message', this.message);
@@ -50,7 +53,6 @@ class Popup {
 
 @Component({
   selector: 'host-sample-app',
-  directives: [Sample, Popup],
   template: `
   <div class="ui grid">
     <div class="two column row">
@@ -70,4 +72,15 @@ class Popup {
 export class HostSampleApp {
 }
 
+@NgModule({
+  declarations: [
+    HostSampleApp,
+    Sample,
+    Popup
+  ],
+  exports: [
+    HostSampleApp
+  ]
+})
+export class HostSampleAppModule {}
 

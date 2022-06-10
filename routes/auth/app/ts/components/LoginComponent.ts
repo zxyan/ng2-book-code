@@ -1,7 +1,7 @@
 /*
  * Angular
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
 /*
  * Services
@@ -40,7 +40,7 @@ import {AuthService} from 'services/AuthService';
 export class LoginComponent {
   message: string;
 
-  constructor(public authService: AuthService) {
+  constructor(private authService: AuthService) {
     this.message = '';
   }
 
@@ -48,11 +48,9 @@ export class LoginComponent {
     this.message = '';
     if (!this.authService.login(username, password)) {
       this.message = 'Incorrect credentials.';
-      /* tslint:disable */
       setTimeout(function() {
         this.message = '';
       }.bind(this), 2500);
-      /* tslint:enable */
     }
     return false;
   }

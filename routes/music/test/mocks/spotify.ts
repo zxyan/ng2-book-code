@@ -1,6 +1,4 @@
-import {provide} from 'angular2/core';
-import {SpyObject} from 'angular2/testing_internal';
-
+import {SpyObject} from './helper';
 import {SpotifyService} from '../../app/ts/services/SpotifyService';
 
 export class MockSpotifyService extends SpyObject {
@@ -30,6 +28,6 @@ export class MockSpotifyService extends SpyObject {
   }
 
   getProviders(): Array<any> {
-    return [provide(SpotifyService, {useValue: this})];
+    return [{ provide: SpotifyService, useValue: this }];
   }
 }

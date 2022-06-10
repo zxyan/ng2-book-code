@@ -1,4 +1,4 @@
-import {Injectable, provide} from 'angular2/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthService {
@@ -19,11 +19,11 @@ export class AuthService {
     return localStorage.getItem('username');
   }
 
-  isLogged(): boolean {
+  isLoggedIn(): boolean {
     return this.getUser() !== null;
   }
 }
 
 export var AUTH_PROVIDERS: Array<any> = [
-  provide(AuthService, {useClass: AuthService})
+  { provide: AuthService, useClass: AuthService }
 ];

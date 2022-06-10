@@ -1,7 +1,6 @@
 import {
+  NgModule,
   Component,
-  Directive,
-  ElementRef,
   Input,
   SimpleChange,
   IterableDiffers,
@@ -10,13 +9,9 @@ import {
   OnInit,
   OnDestroy,
   DoCheck,
-  OnChanges,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-} from 'angular2/core';
-
+  OnChanges
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'on-init',
@@ -38,7 +33,6 @@ class OnInitCmp implements OnInit, OnDestroy {
 
 @Component({
   selector: 'on-change',
-  inputs: ['name', 'comment'],
   template: `
   <div class="ui comments">
     <div class="comment">
@@ -56,8 +50,8 @@ class OnInitCmp implements OnInit, OnDestroy {
   `
 })
 class OnChangeCmp implements OnChanges {
-  @Input('name') name: string;
-  @Input('comment') comment: string;
+  @Input() name: string;
+  @Input() comment: string;
 
   ngOnChanges(changes: {[propName: string]: SimpleChange}): void {
     console.log('Changes', changes);
@@ -66,7 +60,6 @@ class OnChangeCmp implements OnChanges {
 
 @Component({
   selector: 'do-check-item',
-  inputs: ['comment'],
   outputs: ['onRemove'],
   template: `
   <div class="ui feed">
@@ -103,7 +96,7 @@ class OnChangeCmp implements OnChanges {
   `
 })
 class DoCheckItem implements DoCheck {
-  @Input('comment') comment: any;
+  @Input() comment: any;
   onRemove: EventEmitter<any>;
   differ: any;
 
@@ -113,7 +106,7 @@ class DoCheckItem implements DoCheck {
   }
 
   ngDoCheck(): void {
-    var changes = this.differ.diff(this.comment);
+    let changes = this.differ.diff(this.comment);
 
     if (changes) {
       changes.forEachAddedItem(r => this.logChange('added', r));
@@ -149,10 +142,9 @@ class DoCheckItem implements DoCheck {
 
 @Component({
   selector: 'do-check',
-  directives: [DoCheckItem],
   template: `
   <do-check-item [comment]="comment"
-    *ngFor="#comment of comments" (onRemove)="removeComment($event)">
+    *ngFor="let comment of comments" (onRemove)="removeComment($event)">
   </do-check-item>
 
   <button class="ui primary button" (click)="addComment()">
@@ -204,7 +196,7 @@ class DoCheckCmp implements DoCheck {
   }
 
   ngDoCheck(): void {
-    var changes = this.differ.diff(this.comments);
+    let changes = this.differ.diff(this.comments);
 
     if (changes) {
       changes.forEachAddedItem(r => console.log('Added', r.item));
@@ -215,7 +207,6 @@ class DoCheckCmp implements DoCheck {
 
 @Component({
   selector: 'lifecycle-sample-app',
-  directives: [OnInitCmp, OnChangeCmp, DoCheckCmp],
   template: `
   <h4 class="ui horizontal divider header">
     OnInit and OnDestroy
@@ -276,5 +267,19 @@ export class LifecycleSampleApp3 {
     this.display = !this.display;
   }
 }
+
+@NgModule({
+  declarations: [
+    LifecycleSampleApp3,
+    DoCheckItem,
+    OnInitCmp,
+    OnChangeCmp,
+    DoCheckCmp
+  ],
+  imports: [ CommonModule ],
+  exports: [ LifecycleSampleApp3 ]
+})
+export class LifecycleSampleApp3Module {}
+
 
 

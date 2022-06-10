@@ -1,61 +1,60 @@
 import {
-  it,
-  describe,
-  fdescribe,
-  expect,
-  inject,
-  injectAsync,
-  afterEach,
-  beforeEachProviders,
-  TestComponentBuilder,
+  TestBed,
   ComponentFixture,
-} from 'angular2/testing';
+  fakeAsync
+} from '@angular/core/testing';
 import {
-  CORE_DIRECTIVES,
-  FORM_DIRECTIVES,
-} from 'angular2/common';
-import { dispatchEvent } from 'angular2/testing_internal';
-import { By } from 'angular2/platform/browser';
-import { FormBuilder } from 'angular2/common';
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
-import { DemoFormWithValidationsExplicit } from '../../app/ts/forms/demo_form_with_validations_explicit';
+import {
+  DemoFormWithValidationsExplicit
+} from '../../app/ts/forms/demo_form_with_validations_explicit';
+import {
+  dispatchEvent,
+  ConsoleSpy
+} from '../util';
 
 describe('DemoFormWithValidationsExplicit', () => {
-  var el, input, form;
+  let el, input, form;
 
-  beforeEachProviders(() => { return [FormBuilder]; });
-
-  function createComponent(tcb: TestComponentBuilder): Promise<ComponentFixture> {
-    return tcb.createAsync(DemoFormWithValidationsExplicit).then((fixture) => {
-      el = fixture.debugElement.nativeElement;
-      input = fixture.debugElement.query(By.css("input")).nativeElement;
-      form = fixture.debugElement.query(By.css("form")).nativeElement;
-      fixture.detectChanges();
-
-      return fixture;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule, ReactiveFormsModule ],
+      declarations: [ DemoFormWithValidationsExplicit ]
     });
+  });
+
+  function createComponent(): ComponentFixture<any> {
+    let fixture = TestBed.createComponent(DemoFormWithValidationsExplicit);
+    el = fixture.debugElement.nativeElement;
+    input = fixture.debugElement.query(By.css('input')).nativeElement;
+    form = fixture.debugElement.query(By.css('form')).nativeElement;
+    fixture.detectChanges();
+
+    return fixture;
   }
 
-  it('displays errors with no sku', injectAsync([TestComponentBuilder], (tcb) => {
-    return createComponent(tcb).then((fixture) => {
-      input.value = '';
-      dispatchEvent(input, 'input');
-      fixture.detectChanges();
+  it('displays errors with no sku', fakeAsync( () => {
+    let fixture = createComponent();
+    input.value = '';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
 
-      let msgs = el.querySelectorAll('.ui.error.message');
-      expect(msgs[0]).toHaveText('SKU is invalid');
-      expect(msgs[1]).toHaveText('SKU is required');
-    });
+    let msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs[0].innerHTML).toContain('SKU is invalid');
+    expect(msgs[1].innerHTML).toContain('SKU is required');
   }));
 
-  it('displays no errors when sku has a value', injectAsync([TestComponentBuilder], (tcb) => {
-    return createComponent(tcb).then((fixture) => {
-      input.value = 'ABC';
-      dispatchEvent(input, 'input');
-      fixture.detectChanges();
+  it('displays no errors when sku has a value', fakeAsync( () => {
+    let fixture = createComponent();
+    input.value = 'ABC';
+    dispatchEvent(input, 'input');
+    fixture.detectChanges();
 
-      let msgs = el.querySelectorAll('.ui.error.message');
-      expect(msgs.length).toEqual(0);
-    });
+    let msgs = el.querySelectorAll('.ui.error.message');
+    expect(msgs.length).toEqual(0);
   }));
 });
